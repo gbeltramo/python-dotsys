@@ -1,0 +1,9 @@
+/dist
+__pycache__/
+*.egg-info/
+
+# Emacs
+dotfiles/.emacs.d/*
+!dotfiles/.emacs.d/init.org
+!dotfiles/.emacs.d/templates
+*~

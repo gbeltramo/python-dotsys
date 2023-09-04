@@ -1,0 +1,9 @@
+#!/usr/bin/env -S bash
+
+if [ -d "$HOME/Downloads" ]; then
+    echo $@ >> $HOME/Downloads/clipboard
+    exit 0
+else
+    echo "ERROR: the directory $HOME/Downloads/ does not exist"
+    exit 1
+fi

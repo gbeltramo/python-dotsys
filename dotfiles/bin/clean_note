@@ -1,0 +1,95 @@
+#!/usr/bin/env p
+
+long_descr = """
+Description
+-----------
+Delete the output of EIN code blocks.
+
+"""
+
+import argparse
+import pathlib
+import os
+
+
+def main():
+    args = parse_arguments()
+    validate_arguments(args)
+    clean_note_file(args)
+
+
+def parse_arguments():
+    """Get input `note_filename`."""
+    
+    parser = argparse.ArgumentParser(
+        prog="clean_note",
+        description="Delete 'bad' lines and multiple newlines from .note file"
+    )
+
+    parser.add_argument(
+        "-f", "--note_filename",
+        help="A .note filename",
+        type=str,
+        default="scratch.note",
+    )
+
+    args = parser.parse_args()
+
+    return args
+
+
+def validate_arguments(args):
+    """Check that the input filename is valid and exists."""
+    
+    assert isinstance(args.note_filename, str)
+
+    absolute_path = pathlib.Path(args.note_filename).absolute()
+    assert absolute_path.exists(), f"The note file={absolute_path} does not exist"
+    
+    _, note_ext = os.path.splitext(args.note_filename)
+    assert note_ext == ".note", f"Wrong {note_ext} extension"
+
+    
+def clean_note_file(args):
+    """Remove #+RESULTS lines from .note file and remove multiple consucuite newlines."""
+    
+    # Read all lines
+    with open(args.note_filename, "r") as in_file:
+        original_lines = in_file.readlines()
+
+    # Select lines which are not the output results of a Org-mode code block
+    starting_chars_of_lines_that_need_deletion = ("#+RESULTS", ":", "|")
+    good_lines = []
+    for line in original_lines:
+        add_line = True
+        for bad_start in starting_chars_of_lines_that_need_deletion:
+            if line.startswith(bad_start):
+                add_line = False
+                break
+        if add_line:
+            good_lines.append(line)
+
+    # Remove any consecutive "\n" lines
+    final_lines = []
+    
+    skip_line = False
+    for idx, line in enumerate(good_lines):
+        if line != "\n":
+            final_lines.append(line)
+            skip_line = False
+        elif line == "\n" and not skip_line:
+            final_lines.append(line)
+            skip_line = True
+        elif line == "\n" and skip_line:
+            continue
+        else:
+            raise ValueError(f"The if/else logic is wrong at line={line} idx={idx}")            
+            
+    # Write final lines
+    text = "".join(final_lines)
+    with open(args.note_filename, "w") as out_file:
+        out_file.write(text)
+    
+
+if __name__ == "__main__":
+    main()

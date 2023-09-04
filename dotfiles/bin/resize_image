@@ -1,0 +1,58 @@
+#!/usr/bin/env p
+
+long_descr = """
+Description
+-----------
+Simple tool used to resize images using `ffmpeg`.
+
+In practice, this is a Python script wrapping a single ffmpeg command.
+
+Dependencies
+------------
+1. `/usr/bin/python3`
+2. `ffmpeg` in your `$PATH`
+
+Example command
+---------------
+- `resize.py -w 720 -f <IMAGE-FILE-NAME>`
+
+"""
+
+import os
+import argparse
+
+
+def parse_args():
+    """Parse arguments used to resize image."""
+
+    parser = argparse.ArgumentParser(
+        description=long_descr,
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    parser.add_argument("-w", "--width", type=int, required=True, help="Output width")
+    parser.add_argument("--height", type=int, help="Output height")
+    parser.add_argument("-f", "--file", type=str, required=True, help="Filename of image to resize")
+    args = parser.parse_args()
+
+    return args
+
+
+def main(args):
+    """Resize an input image with `ffmpeg`."""
+    
+    height = args.height if not args.height is None else -1
+    width = args.width
+    assert width > 0, "width need to be a positive integer"
+
+    file_name, file_extension = os.path.splitext(args.file)
+    
+    
+    ffmpeg_command =(f"ffmpeg -i {args.file} -vf scale={height}:{width}"
+                     f" {file_name}-{width}{file_extension}")
+    os.system(ffmpeg_command)
+
+
+if __name__ == "__main__":
+    args = parse_args()
+    main(args)
+    

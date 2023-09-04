@@ -1,0 +1,1259 @@
+#+options: toc:2
+#+startup: overview
+#+title: Emacs 29 Configuration
+#+author: Gabriele Beltramo
+
+*Important* Need to use a bundle obained with the ~auto editor emacs~ tool.
+
+* Manual packages
+Byte compilation was performed with
+
+- ~emacs -Q -batch -L . -f batch-byte-compile *.el~
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- location of byte compiled packages ---
+  (add-to-list 'load-path "~/tmp/emacs/pkgs-byte-compiled")
+#+end_src
+
+#+begin_src text :tangle no
+  drwx------  4 gabri gabri 4096 Aug 14 11:50 anaphora/
+  drwx------  8 gabri gabri 4096 Aug 14 12:30 auto-complete/
+  drwx------  4 gabri gabri 4096 Jul 31 10:52 compat/
+  drwx------  3 gabri gabri 4096 Jul 10 15:01 consult/
+  drwx------  4 gabri gabri 4096 Aug  1 15:45 corfu/
+  drwx------  6 gabri gabri 4096 Aug  5 11:49 dash.el/
+  drwx------  5 gabri gabri 4096 Aug 14 12:33 emacs-ctable/
+  drwx------  5 gabri gabri 4096 Aug 14 11:38 emacs-deferred/
+  drwx------  6 gabri gabri 4096 Aug 14 12:31 emacs-epc/
+  drwx------  3 gabri gabri 4096 Aug  4 12:31 emacs-htmlize/
+  drwx------  8 gabri gabri 4096 Aug 14 11:21 emacs-ipython-notebook/
+  drwx------  4 gabri gabri 4096 Aug 14 12:29 emacs-jedi/
+  drwx------  4 gabri gabri 4096 Aug 14 12:35 emacs-python-environment/
+  drwx------  7 gabri gabri 4096 Aug 14 11:28 emacs-request/
+  drwx------  3 gabri gabri 4096 Aug 14 11:55 emacs-web-server/
+  drwx------  3 gabri gabri 4096 Aug 14 11:28 emacs-websocket/
+  drwx------  5 gabri gabri 4096 Jul 10 15:10 emacs-which-key/
+  drwx------  7 gabri gabri 4096 Aug  5 12:29 flycheck/
+  drwx------  3 gabri gabri 4096 Aug  6 10:42 flycheck-eglot/
+  drwx------  4 gabri gabri 4096 Aug  6 11:26 flycheck-inline/
+  drwx------  5 gabri gabri 4096 Aug  1 16:07 go-mode.el/
+  drwx------  6 gabri gabri 4096 Jul 21 17:37 hydra/
+  drwx------  5 gabri gabri 4096 Aug 14 11:58 js2-mode/
+  drwx------  4 gabri gabri 4096 Jul 10 15:05 marginalia/
+  drwx------  6 gabri gabri 4096 Jul 29 14:02 markdown-mode/
+  drwx------  4 gabri gabri 4096 Aug  4 12:34 org-reveal/
+  drwx------  4 gabri gabri 4096 Aug  5 12:29 pkg-info/
+  drwx------  8 gabri gabri 4096 Aug 14 11:52 polymode/
+  drwx------  6 gabri gabri 4096 Aug 14 12:35 popup-el/
+  drwx------  3 gabri gabri 4096 Jul 10 14:16 pulsar/
+  drwx------  5 gabri gabri 4096 Aug 14 11:25 s.el/
+  drwx------  3 gabri gabri 4096 Aug 14 11:30 skewer-mode/
+  drwx------  3 gabri gabri 4096 Aug  5 13:00 tempel/
+  drwx------  4 gabri gabri 4096 Jul 10 14:18 vertico/
+  drwx------  6 gabri gabri 4096 Aug  5 12:51 yaml-mode/
+#+end_src
+
+* Startup performance
+Taken from https://github.com/daviwil/dotfiles/blob/master/Emacs.org#startup-performance
+
+"Make startup faster by reducing the frequency of garbage collection and then
+use a hook to measure Emacs startup time."
+
+#+begin_src emacs-lisp :tangle yes
+
+  ;; -*- lexical-binding: t; -*-
+
+  ;; The default is 800 kilobytes.  Measured in bytes.
+  (setq gc-cons-threshold (* 50 1000 1000))
+
+  ;; Profile emacs startup
+  (add-hook 'emacs-startup-hook
+	    (lambda ()
+	      (message "*** Emacs loaded in %s seconds with %d garbage collections."
+		       (emacs-init-time "%.2f")
+		       gcs-done)))
+#+end_src
+
+* Basics
+** User interface
+Make Emacs user interface more minimal.
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- Basics ---
+  (setq inhibit-startup-screen t) ;; Do not show "Welcome" startup buffer
+  (menu-bar-mode -1)              ;; More vertical space
+  (tool-bar-mode -1)              ;; More vertical space
+  (scroll-bar-mode -1)            ;; Disable visible scrollbar
+  (tooltip-mode -1)               ;; Disable tooltips
+  (set-fringe-mode 10)            ;; Give some breathing room
+  (setq visible-bell t)           ;; Set up the visible bell
+  (xterm-mouse-mode t)            ;; Enable mouse use
+  (column-number-mode t)          ;; Show column number in status bar
+#+end_src
+
+** Minibuffer within minibuffer
+Enable calling commands, while calling commands.
+
+#+begin_src emacs-lisp :tangle yes
+  ;; Minibuffer within minibuffer
+  (setq enable-recursive-minibuffers t)
+#+end_src
+
+** fill-column == line-length
+Column beyond which automatic line-wrapping should happen.
+
+#+begin_src emacs-lisp :tangle yes
+  ;; Global line length
+  (setq-default fill-column 77)
+#+end_src
+
+** yes-no --> y-n
+
+Answer with just ~y~ or ~n~ instead of ~yes~ and ~no~.
+
+#+begin_src emacs-lisp :tangle yes
+  ;; Use y and n for answers
+  (fset 'yes-or-no-p 'y-or-n-p)
+#+end_src
+
+** Select new ~*Help*~ windows
+
+#+begin_src emacs-lisp :tangle yes
+  ;; Switch to help window with 'C-h *' commands
+  (setq help-window-select t)
+#+end_src
+
+** Backup files location
+Save all backup files (automatically created by Emacs with ~~~) in a single
+directory, and always copy to create them.
+
+#+begin_src emacs-lisp :tangle yes
+  ;; Put all backup files into ~/tmp/emacs/backups
+  (setq backup-directory-alist '(("." . "~/tmp/emacs/backups")))
+  (setq backup-by-copying t)
+#+end_src
+
+** Local customizations file
+Emacs configuration options modified with ~M-x customize~ will *not* be saved
+in ~~/.emacs.d/init.el~. Instead, we use ~~/.emacs.d/local-init.el~.
+
+#+begin_src emacs-lisp :tangle yes
+  ;; Use separate file for interactive configuration 
+  (setq custom-file "~/.emacs.d/local-init.el")
+
+  (let ((local-init "~/.emacs.d/local-init.el"))
+    (when (file-exists-p local-init)
+      (load custom-file)))
+#+end_src
+
+** Save Desktop
+Persist the opened windows to next time Emacs is used.
+
+#+begin_src emacs-lisp :tangle yes
+  ;; Enabel Desktop save mode
+  (desktop-save-mode t)
+#+end_src
+
+** Scroll pixel by pixel
+Avoid scrolling one line of text at a time.
+
+#+begin_src emacs-lisp :tangle yes
+  ;; Scroll pixel by pixel
+  (pixel-scroll-precision-mode t)
+#+end_src
+
+** Ibuffers
+Better version of traditional ~list-buffers~ with ~C-x C-b~.
+
+  #+begin_src emacs-lisp :tangle yes
+    (defalias 'list-buffers 'ibuffer)
+    (setq ibuffer-saved-filter-groups
+          (quote (("default"
+                   ("dired" (mode . dired-mode))
+                   ("org" (name . "^.*org$"))
+                   ;; ("magit" (mode . magit-mode))
+                   ("IRC" (or (mode . circe-channel-mode) (mode . circe-server-mode)))
+                   ("web" (or (mode . web-mode) (mode . js2-mode)))
+                   ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
+                   ("mu4e" (or
+
+                            (mode . mu4e-compose-mode)
+                            (name . "\*mu4e\*")
+                            ))
+                   ("programming" (or
+                                   (mode . clojure-mode)
+                                   (mode . clojurescript-mode)
+                                   (mode . python-mode)
+                                   (mode . c++-mode)))
+                   ("emacs" (or
+                             (name . "^\\*scratch\\*$")
+                             (name . "^\\*Messages\\*$")))
+                   ))))
+      (add-hook 'ibuffer-mode-hook
+            (lambda ()
+              (ibuffer-auto-mode 1)
+              (ibuffer-switch-to-saved-filter-groups "default")))
+  #+end_src
+  
+* Dependencies
+
+** dash
+A library of functions namespaced by ~-~ that operates on lists.
+
+Used by ~flycheck~. Need to run
+
+#+begin_src bash :tangle no
+  cp ~/tmp/emacs/manual-packages/dash.el/dash.el ~/tmp/emacs/manual-packages/flycheck/
+#+end_src
+
+Link: https://github.com/magnars/dash.el
+
+#+begin_src  emacs-lisp :tangle yes
+  (require 'dash)
+  (require 'dash-functional)
+#+end_src
+
+** pkg-info
+Provide information about Emacs packages.
+
+Used by ~flycheck~
+
+Link: https://github.com/emacsorphanage/pkg-info
+
+#+begin_src bash :tangle no
+  cp ~/tmp/emacs/manual-packages/pkg-info/pkg-info.el ~/tmp/emacs/manual-packages/flycheck/
+#+end_src
+
+* Navigation
+
+** pulsar
+Temporarily highlights the current line after a given function is invoked.
+
+Link: https://github.com/protesilaos/pulsar
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- pulsar ---
+  (add-to-list 'load-path '"~/tmp/emacs/manual-packages/pulsar")
+  (require 'pulsar)
+
+  ; List of functions for which pulsing is enabled
+  (setq pulsar-pulse-functions
+	'(recenter-top-bottom beginning-of-buffer end-of-buffer ace-window))
+    (setq pulsar-pulse t)
+    (setq pulsar-delay 0.055)
+    (setq pulsar-iterations 10)
+    (setq pulsar-face 'pulsar-magenta)
+    (setq pulsar-highlight-face 'pulsar-yellow)
+
+    (pulsar-global-mode t)
+#+end_src
+
+** vertico
+Vertico provides a performant and minimalistic vertical completion UI based
+on the default completion system. The focus of Vertico is to provide a UI
+which behaves correctly under all circumstances.
+
+It uses the Elisp function ~completing-read~.
+
+Link: https://github.com/minad/vertico
+
+#+begin_src emacs-lisp :tangle yes
+  ;; -- vertico ---
+  (add-to-list 'load-path "~/tmp/emacs/manual-packages/compat") ;; ! vertico dependency !
+  (add-to-list 'load-path "~/tmp/emacs/manual-packages/vertico")
+  (add-to-list 'load-path "~/tmp/emacs/manual-packages/vertico/extensions")
+  (require 'vertico)
+  (require 'vertico-buffer)
+  (require 'vertico-directory)
+  (require 'vertico-flat)
+  (require 'vertico-grid)
+  (require 'vertico-indexed)
+  (require 'vertico-mouse)
+  (require 'vertico-multiform)
+  (require 'vertico-quick)
+  (require 'vertico-repeat)
+  (require 'vertico-reverse)
+  (require 'vertico-unobtrusive)
+
+  (vertico-mode t)
+  (setq vertico-cycle t)
+  (setq vertico-scroll-margin 0)
+  (setq vertico-count 20)
+  (setq vertico-resize t)
+  ;; Change color of highlighted line to make it readable with
+  ;; vertico and tango-dark combination
+  (set-face-attribute 'highlight nil :background "#294F6E" :foreground "#ffaa55")
+
+  ;; Persist history over Emacs restarts. Vertico sorts by history position.
+  (use-package savehist
+    :init
+    (savehist-mode))  
+
+  ;; Ido-mode like navigation
+  (use-package vertico-directory
+    :after vertico
+    :ensure nil
+    :demand t
+    ;; More convenient directory navigation commands
+    :bind (:map vertico-map
+		("RET" . vertico-directory-enter)
+		("DEL" . vertico-directory-delete-char)
+		("M-DEL" . vertico-directory-delete-word))
+    ;; Tidy shadowed file names
+    :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+#+end_src
+
+** orderless: match by regexp or other
+This package provides an orderless completion style that divides the pattern
+into space-separated components, and matches candidates that match all of the
+components in any order. Each component can match in any one of several ways:
+literally, as a regexp, as an initialism, in the flex style, or as multiple
+word prefixes. By default, regexp and literal matches are enabled.
+	
+Link: https://github.com/oantolin/orderless
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- orderless ---
+  (use-package orderless
+    :ensure t
+    :after vertico
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles basic partial-completion)))))
+#+end_src
+
+** consult: search and navigation with completions
+Consult provides search and navigation commands based on the Emacs completion
+function completing-read. Completion allows you to quickly select an item
+from a list of candidates.
+
+It provides commands like:
+
+- ~consult-line~ :: live preview of matched lines in current buffer with
+  orderless search
+- ~consult-line-multi~ :: live preview of matched lines in all project
+  buffers with orderless search
+- ~consult-ripgrep~ :: search for regular expressions in project files. When
+  invoked with ~C-u~ it allows to restrict the search to a directory
+- ~consult-find~ :: find file in project by matching the path against a
+  regexp
+- ~consult-imenu~ :: jump to ~imenu~ item in current buffer
+- ~consult-imenu-multi~ :: to ~imenu~ item in all project buffers
+- ~consult-buffer~ :: preview and switch to other buffers with narrowing
+  commands
+- ~consult-project-buffer~ :: preview and switch to project buffers with
+  narrowing commands
+- ~consult-bookmark~ :: select and create bookmarks
+
+The complementary package ~marginalia~ enriches the completion display with
+annotations, e.g., documentation strings or file information.
+
+Link: https://github.com/minad/consult
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- consult ---
+  (add-to-list 'load-path "~/tmp/emacs/manual-packages/consult")
+  (require 'consult)
+  (require 'consult-compile)
+  (require 'consult-flymake)
+  (require 'consult-info)
+  (require 'consult-imenu)
+  (require 'consult-kmacro)
+  (require 'consult-register)
+  (require 'consult-org)
+  (require 'consult-xref)
+
+  ;; Enable automatic preview at point in the *Completions* buffer. This is
+  ;; relevant when you use the default completion UI.
+  (add-hook 'completion-list-mode 'consult-preview-at-point-mode)
+
+  ;; Optionally configure the register formatting. This improves the register
+  ;; preview for `consult-register', `consult-register-load',
+  ;; `consult-register-store' and the Emacs built-ins.
+  (setq register-preview-delay 0.5
+	register-preview-function #'consult-register-format)
+
+  ;; Optionally tweak the register preview window.  This adds thin lines,
+  ;; sorting and hides the mode line of the window.
+  (advice-add #'register-preview :override #'consult-register-window)
+
+  ;; Use Consult to select xref locations with preview
+  (setq xref-show-xrefs-function #'consult-xref
+	xref-show-definitions-function #'consult-xref)
+
+  ;; Optionally configure preview. The default value is 'any, such that any key
+  ;; triggers the preview.  (setq consult-preview-key 'any) (setq
+  ;; consult-preview-key "M-.")  (setq consult-preview-key '("S-<down>"
+  ;; "S-<up>")) For some commands and buffer sources it is useful to configure
+  ;; the :preview-key on a per-command basis using the `consult-customize'
+  ;; macro.
+  (consult-customize
+   consult-theme :preview-key '(:debounce 0.2 any)
+   consult-ripgrep consult-git-grep consult-grep
+   consult-bookmark consult-recent-file consult-xref
+   consult--source-bookmark consult--source-file-register
+   consult--source-recent-file consult--source-project-recent-file
+   ;; :preview-key "M-."
+   :preview-key '(:debounce 0.4 any))
+
+  ;; Optionally configure the narrowing key.
+  ;; Both < and C-+ work reasonably well.
+  (setq consult-narrow-key "<") ;; "C-+"
+
+  ;; Optionally make narrowing help available in the minibuffer.  You may want
+  ;; to use `embark-prefix-help-command' or which-key instead.  (define-key
+  ;; consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
+
+  ;; integration with pulsar package
+  (add-hook 'consult-after-jump-hook #'pulsar-recenter-top)
+  (add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
+#+end_src
+
+** marginalia
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- marginalia ---
+  (add-to-list 'load-path "~/tmp/emacs/manual-packages/marginalia")
+  (require 'marginalia)
+  (marginalia-mode t)
+#+end_src
+
+** vertico-multiform
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- vertico-multiform ---
+  ;; Configure the display per command. Use a buffer with indices for imenu and
+  ;; a flat (Ido-like) menu for M-x.
+  (setq vertico-multiform-commands
+	'((consult-imenu buffer indexed)
+	  (consult-grep buffer indexed)
+	  (consult-git-grep buffer indexed)	  
+	  (consult-ripgrep  buffer indexed)
+	  (consult-line buffer indexed)
+	  (execute-extended-command indexed)))
+  (vertico-multiform-mode t)
+#+end_src
+
+** ace windows: switch between windows
+Note that ~aw-keys~ is the list of initial characters used in window labels:
+
+Link: https://github.com/abo-abo/ace-window
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- ace window ---
+  (use-package ace-window
+    :ensure t
+    :bind
+    ;; Key binding to switch windows
+    ("C-x o" . ace-window)
+    :init
+    ;; Keys used to navigate windows
+    (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+    ;; Make fonts bigger
+    (custom-set-faces      
+     '(aw-leading-char-face
+       ((t (:inherit ace-jump-face-foreground :height 2.0))))))
+#+end_src
+
+* Completion
+
+** corfu
+Corfu enhances in-buffer completion with a small completion popup.
+
+Link: https://github.com/minad/corfu
+
+#+begin_src emacs-lisp :tangle yes
+  (add-to-list 'load-path "~/tmp/emacs/manual-packages/corfu")
+  (require 'corfu)
+
+  (global-corfu-mode t)
+
+  ;; Enable auto completion and configure quitting
+  (setq corfu-auto t
+	corfu-quit-no-match 'separator) ;; or t
+#+end_src
+
+* Org
+Org mode settings.
+
+** Config
+
+#+begin_src emacs-lisp :tangle yes
+  ;; -- org-mode configuration ---
+  (setq org-ellipsis " ▾")
+  (setq org-hide-emphasis-markers t)
+  (setq org-src-fontify-natively t)
+  (setq org-fontify-quote-and-verse-blocks t)
+  (setq org-src-tab-acts-natively t)
+  (setq org-edit-src-content-indentation 2)
+  (setq org-hide-block-startup nil)
+  (setq org-src-preserve-indentation nil)
+  (setq org-startup-folded 'content)
+  (setq org-cycle-separator-lines 2)
+  (setq org-startup-with-inline-images t)
+
+  ;; code blocks colors
+  (custom-set-faces
+   '(org-block-begin-line
+     ((t (:underline "#A7A6AA" :foreground "#008ED1" :background "#cacaca" :extend t))))
+   '(org-block
+     ((t (:background "#3f3f42" :extend t))))
+   '(org-block-end-line
+     ((t (:overline "#A7A6AA" :foreground "#008ED1" :background "#cacaca" :extend t)))))
+#+end_src
+
+** Hooks
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- org-mode hooks ---
+  (defun gbel/org-mode-setup ()
+    (org-indent-mode)
+    (auto-fill-mode 0)
+    (visual-line-mode 1))
+
+  ;; Always tangle after save in org mode
+  (add-hook 'org-mode-hook 
+            (lambda () 
+              (add-hook 'after-save-hook 'org-babel-tangle nil 'make-it-local)))
+  (add-hook 'org-mode-hook 'gbel/org-mode-setup)
+#+end_src
+
+** TODOs
+
+*** Sequence of states
+
+#+begin_src emacs-lisp :tangle yes
+  ;; org-mode TODOs states cycled with C-c C-t
+  (setq org-todo-keywords
+	'((sequence "TODO" "IN PROGRESS" "|" "DONE")))
+#+end_src
+
+** org-reveal
+Org-Reveal exports your Org documents to reveal.js presentations.
+
+With Org-reveal, you can create beautiful presentations with 3D effects from
+simple but powerful Org contents.
+
+*Important* Remember to download the ~reveal.js~ repo to your computer and set
+the ~org-reveal-root~ path correctly.
+
+Link: https://github.com/yjwen/org-reveal
+
+#+begin_src emacs-lisp
+  (add-to-list 'load-path "~/tmp/emacs/manual-packages/org-reveal")
+  (require 'ox-reveal)
+
+  ;; The next line is for macOS,
+  ;; (setq org-reveal-root "/Users/gabri/Github/reveal.js")
+  ;; use #+REVEAL_ROOT: in org files
+
+  (setq org-reveal-mathjax t)
+#+end_src
+
+* Programming
+All configurations related to programming languages.
+
+** Auto-complete
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- enable auto-complete-mode by default ---
+  (require 'auto-complete)
+  (global-auto-complete-mode t)
+
+#+end_src
+** Line numbers
+Add line numbers in all file containing code.
+
+#+begin_src emacs-lisp :tangle yes
+  ;; Display line numbers in prog-mode
+  (defun gbel/line-numbers-hook ()
+    (display-line-numbers-mode t))
+  (add-hook 'prog-mode-hook 'gbel/line-numbers-hook)
+#+end_src
+
+** Shebang to mode
+Configure major modes based on shebang line
+
+#+begin_src emacs-lisp :tangle yes
+  (add-to-list 'interpreter-mode-alist
+               '("bash" . sh-mode)
+               '("p" . python-mode))
+#+end_src
+
+** Better comments
+Inspiration from Mike Zamanski and r/emacs ~ncsuwolf~, see
+https://cestlaz.github.io/posts/better-comments/#.V2snrt9vH0o
+
+#+begin_src emacs-lisp :tangle yes 
+  ;; --- TODO and NOTE comments ---
+  (defface font-lock-comment-note
+    '((t (:underline t)))
+    "For NOTE comments")
+
+  (defface font-lock-comment-todo
+    '((t (:background "#aaaaaa" :foreground "#cc2222")))
+    "For TODO comments")
+
+
+  (defun add-custom-keyw()
+    "adds a few special keywords"
+    (font-lock-add-keywords
+     nil
+     '(("\\s TODO \\(.+\\)" 1 'font-lock-comment-todo prepend)
+       ("\\s NOTE \\(.+\\)" 1 'font-lock-comment-note prepend))))
+
+  (add-hook 'prog-mode-hook 'add-custom-keyw)
+#+end_src
+
+** tempel: simple templates for Emacs
+Tempel is a tiny template package for Emacs, which uses the syntax of the
+Emacs Tempo library.
+
+The templates are defined in ~$HOME/.emacs.d/templates~ in ~lisp-data-mode~.
+
+Link: https://github.com/minad/tempel
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- tempel ---
+  (add-to-list 'load-path "~/tmp/emacs/manual-packages/tempel")
+  (require 'tempel)
+  
+
+  ;; Setup tempel completion at point
+  (defun tempel-setup-capf ()
+    ;; Add the Tempel Capf to `completion-at-point-functions'.
+    ;; `tempel-expand' only triggers on exact matches. Alternatively use
+    ;; `tempel-complete' if you want to see all matches, but then you
+    ;; should also configure `tempel-trigger-prefix', such that Tempel
+    ;; does not trigger too often when you don't expect it. NOTE: We add
+    ;; `tempel-expand' *before* the main programming mode Capf, such
+    ;; that it will be tried first.
+    (setq-local completion-at-point-functions
+                (cons #'tempel-expand
+                      completion-at-point-functions)))
+
+  (add-hook 'conf-mode-hook 'tempel-setup-capf)
+  (add-hook 'prog-mode-hook 'tempel-setup-capf)
+  (add-hook 'text-mode-hook 'tempel-setup-capf)
+
+  ;; --- tempel keys ---
+  (define-key tempel-map (kbd "C-p") 'tempel-previous)
+  (define-key tempel-map (kbd "<tab>") 'tempel-next)
+  (defun gbel/add-tempel-keys ()
+      (local-set-key (kbd "M-m") 'tempel-complete))
+  (add-hook 'prog-mode-hook #'gbel/add-tempel-keys)
+
+#+end_src
+
+** Help
+
+*** eldoc
+Disable ~eldoc~ and use ~M-c e~ instead if necessary.
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- no eldoc ---
+  ;; use M-c e instead
+  (defun gbel/disable-eldoc ()
+    (eldoc-mode -1))
+  (add-hook 'prog-mode-hook #'gbel/disable-eldoc)
+
+#+end_src
+
+*** flymake
+Disable flymake
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- no flymake ---
+  (defun gbel/disable-flymake ()
+    (flymake-mode -1))
+  (add-hook 'prog-mode-hook #'gbel/disable-flymake)
+#+end_src
+
+*** flycheck
+On-the-fly syntax checking using exeternally installed syntax checker,
+i.e. ~pylint~ installed in a virtual env.
+
+*Important* Need to be able to import ~dash.el~ and ~pkf-info.el~, which need to be
+downloaded separately.
+
+Link: https://github.com/flycheck/flycheck
+
+#+begin_src emacs-lisp :tangle yes
+  (add-to-list 'load-path "~/tmp/emacs/manual-packages/flycheck")
+  (require 'flycheck)
+
+  (global-flycheck-mode t)
+#+end_src
+
+*** flycheck-inline
+This is an extension for Flycheck. It implements a minor-mode for displaying
+errors from Flycheck right below their reporting location, using overlays.
+
+Link: https://github.com/flycheck/flycheck-inline
+
+#+begin_src emacs-lisp :tangle yes
+  (add-to-list 'load-path "~/tmp/emacs/manual-packages/flycheck-inline")
+  (require 'flycheck-inline)
+
+  (with-eval-after-load 'flycheck
+    (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
+#+end_src
+
+*** flycheck-eglot
+A simple “glue” minor mode that allows Flycheck and Eglot to work
+together. Thus, the Flycheck frontend can display the results of syntactic
+checks performed by the LSP server.
+
+Link: https://github.com/intramurz/flycheck-eglot
+
+#+begin_src emacs-lisp :tangle yes
+  (add-to-list 'load-path "~/tmp/emacs/manual-packages/flycheck-eglot")
+  (require 'flycheck-eglot)
+
+  (global-flycheck-eglot-mode t)
+#+end_src
+
+** markdown
+
+Link: https://github.com/jrblevin/markdown-mode
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- markdown-mode ---
+  (add-to-list 'load-path "~/tmp/emacs/manual-packages/markdown-mode")
+  (require 'markdown-mode)
+
+  (setq markdown-command "multimarkdown")
+  (add-to-list 'auto-mode-alist '("\\.\\(?:md\\|markdown\\|mkd\\|mdown\\|mkdn\\|mdwn\\)\\'" . markdown-mode))
+
+  ;; major mode for editing GitHub Flavored Markdown files
+  (add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
+
+  ;; prettify
+  (markdown-toggle-url-hiding t)
+#+end_src
+
+** htmlize
+This package converts the buffer text and the associated decorations to HTML.
+
+Link: https://github.com/hniksic/emacs-htmlize
+
+#+begin_src emacs-lisp :tangle yes
+  (add-to-list 'load-path "~/tmp/emacs/manual-packages/emacs-htmlize")
+  (require 'htmlize)
+#+end_src
+
+** YAML
+Simple major mode to edit YAML file for Emacs.
+
+Link: https://github.com/yoshiki/yaml-mode
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- yaml-mode ---
+  (add-to-list 'load-path "~/tmp/emacs/manual-packages/yaml-mode")
+  (require 'yaml-mode)
+  (add-to-list 'auto-mode-alist '("\\.ya?ml\\'" . yaml-mode))
+#+end_src
+
+** Dockerfile
+A Dockerfile mode for Emacs.
+
+Link: https://github.com/spotify/dockerfile-mode
+
+#+begin_src emacs-lisp :tangle yes
+  (add-to-list 'load-path "~/tmp/emacs/manual-packages/dockerfile-mode/")
+  (require 'dockerfile-mode)
+#+end_src
+
+** HashiCorp Configuration Language (HCL)
+Major mode for Hashicorp Configuration Language.
+
+Link: https://github.com/hcl-emacs/hcl-mode
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- hcl-mode ---
+  (add-to-list 'load-path "~/tmp/emacs/manual-packages/hcl-mode")
+  (require 'hcl-mode)
+  (add-to-list 'auto-mode-alist '("\\.hcl\\'" . hcl-mode))
+#+end_src
+
+** Golang
+Use ~go-mode~ in ~.go~ files.
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- go-mode ---
+  (add-to-list 'load-path "~/tmp/emacs/manual-packages/go-mode.el")
+  (require 'go-mode)
+  (require 'go-guru)
+  (require 'go-rename)
+
+  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
+
+  ;; eglot LSP support
+  (add-hook 'go-mode 'eglot-ensure)
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 '(go-mode . ("~/go/bin/gopls"))))
+
+  (font-lock-add-keywords 'go-mode
+                          '(("\\<\\(FIXME\\):" 1 'font-lock-warning-face prepend)
+                            ("\\<\\(and\\|or\\|not\\)\\>" . 'font-lock-keyword-face)))
+#+end_src
+
+** Python
+Configure ~python-mode~ for ~.py~ files with ~jedi~
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- python-mode ---
+  (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+
+  ;; ;; eglot LSP support
+  ;; (add-hook 'python-mode 'eglot-ensure)
+  ;; (with-eval-after-load 'eglot
+  ;;   (add-to-list 'eglot-server-programs
+  ;; 	       '(python-mode . ("~/.venvs/syspy/bin/pylsp"))))
+
+  ;; (require 'jedi)
+  ;; (add-hook 'python-mode-hook 'jedi:setup)
+  ;; (setq jedi:complete-on-dot t)
+#+end_src
+
+*** EIN: Emacs IPython Notebooks
+The Emacs IPython Notebook (EIN) package provides a Jupyter Notebook client
+and integrated REPL (like SLIME) in Emacs. EIN improves notebook editing by
+allowing you to use Emacs. It also expose IPython features such as code
+evaluation, object inspection and code completion.
+
+Dependencies: s.el, dash.el, websocket, requests, requests-deferred,
+skewer-mode, anaphora, polymode, deferred, js2-mode, simple-httpd, jedi (epc
+(ctable), auto-complete, popup, python-environment)
+
+Link: https://github.com/millejoh/emacs-ipython-notebook
+
+*Usage*
+1. Run ~ein:run~ to start a jupyter server (meaning that Emacs was opened from
+   a terminal after running ~mamba activate ..~)
+2. Create a Python running notebook
+3. Attach the running notebook to a ~ob-ein~ ~org-mode~ file using the ~:session
+   http://127.0.0.1:8888/ein_server.ipynb~ header arg
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- Emacs IPython Notebook package ---
+  (require 'ein)
+  (require 'ein-notebook)
+  (require 'ob-ein)
+
+  ;; for usage with org-babel
+  (setq org-babel-load-languages '((ein . t) (emacs-lisp . t)))
+
+  ;; configure C-c C-c to avoid asking y/n when executing a code
+  ;; block in org-mode 
+  (setq org-confirm-babel-evaluate nil)
+#+end_src
+
+* My Macros
+Macros are a way of recording a sequence of consecutive key-presses and
+making it into a Lisp command.
+
+From the manual: A “keyboard macro” is a command defined by an Emacs user to
+stand for another sequence of keys. You define a keyboard macro by executing
+and recording the commands which are its definition.
+
+1. Start recording with: ~<f3>~
+2. End recording with: ~<f4>~
+3. Name last defined macro: ~M-x kmacro-name-last-macro~
+4. Insert macro as Lisp code in current buffer: ~M-x insert-kbd-macro~
+
+The following code block contains my named macros.
+
+#+begin_src emacs-lisp :tangle yes
+  ;; Run ripgrep (using 'M-s r') on the string at point (between 'SPC' and '(')
+  (defalias 'gbel/copy-func-name
+    (kmacro "C-r SPC C-f C-SPC C-s ( C-b M-w"))
+
+  ;; Execute next EIN code block
+  (defalias 'gbel/ein-exec-next-code-block
+     (kmacro "C-s # + b e g i n _ s r c SPC e i n <return> C-c C-c C-s # + e n d _ s r c <return> C-l"))
+
+  ;; Insert EIN cell
+  (defalias 'gbel/ein-insert-cell
+     (kmacro "C-c C-, s e i n - p y t h o n <return> C-c ' C-x C-="))
+#+end_src
+
+* My Functions
+My Lisp commands.
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- My ELisp functions ---
+#+end_src
+
+** Themes
+Functions to switch between light and dark theme
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- theme functions ---
+  (defun gbel/light-theme ()
+    (interactive)
+    (disable-theme 'tango-dark)
+    (load-theme 'leuven)
+    (custom-set-faces
+     '(org-block-begin-line
+       ((t (:underline "#A7A6AA" :foreground "#008ED1" :background "#acacac" :extend t))))
+     '(org-block
+       ((t (:background "#dadada" :extend t))))
+     '(org-block-end-line
+       ((t (:overline "#A7A6AA" :foreground "#008ED1" :background "#acacac" :extend t))))))
+
+  (defun gbel/dark-theme ()
+    (interactive)
+    (disable-theme 'leuven)
+    (load-theme 'tango-dark)
+    (custom-set-faces
+     '(org-block-begin-line
+       ((t (:underline "#A7A6AA" :foreground "#008ED1" :background "#cacaca" :extend t))))
+     '(org-block
+       ((t (:background "#3f3f42" :extend t))))
+     '(org-block-end-line
+       ((t (:overline "#A7A6AA" :foreground "#008ED1" :background "#cacaca" :extend t))))))
+
+  ;; set theme
+  (gbel/dark-theme)
+#+end_src
+
+** Search
+Search related functions
+#+begin_src emacs-lisp :tangle yes
+
+  ;; Get the func/class name at point and run ripgrep on it
+  (defun gbel/ripgrep-at-point ()
+    "Run consult-ripgrep at point"
+    (interactive)
+    (gbel/copy-func-name)
+    (consult-ripgrep default-directory (car kill-ring-yank-pointer)))
+#+end_src
+
+** Project
+Projects related functions
+
+#+begin_src emacs-lisp :tangle yes
+  ;; Modified from stack-overflow Kaushal Modi answer
+  (defun gbel/project-revert-file-buffers ()
+    "Refresh all open file buffers without confirmation.
+  Buffers in modified (not yet saved) state in emacs will not be reverted. They
+  will be reverted though if they were modified outside emacs.
+  Buffers visiting files which do not exist any more or are no longer readable
+  will be killed."
+    (interactive)
+    (dolist (buf (buffer-list))
+      (let ((filename (buffer-file-name buf)))
+        ;; Revert only buffers containing files, which are not modified;
+        ;; do not try to revert non-file buffers like *Messages*.
+        (when (and filename
+                   (not (buffer-modified-p buf)))
+          (if (file-in-directory-p filename default-directory) (if (file-readable-p filename)
+              ;; If the file exists and is readable, revert the buffer.
+              (with-current-buffer buf
+                (revert-buffer :ignore-auto :noconfirm :preserve-modes))
+            ;; Otherwise, kill the buffer.
+            (let (kill-buffer-query-functions) ; No query done when killing buffer
+              (kill-buffer buf)
+              (message "Killed non-existing/unreadable file buffer: %s" filename))))))))
+
+  ;; Build project
+  (defun gbel/project-build ()
+    "Call ~make build~ for the current project"
+    (interactive)
+    (let ((default-directory (project-root (project-current t))))
+      (shell-command "make build")))
+
+  ;; Format project files and revert all buffers
+  (defun gbel/project-format ()
+    "Format project files with ~make format~ and revert all buffers in
+  the default-directory"
+    (interactive)
+    (let ((default-directory (project-root (project-current t))))
+      (shell-command "make format"))
+    (gbel/project-revert-file-buffers))
+
+  ;; Test one subuint in project
+  (setq test-subunit "UNDEFINED-PROJECT-SUBUNIT")
+  (defun gbel/project-set-test-subunit (subunit)
+      (interactive "sSubunit to be tested: ")
+      (setq test-subunit subunit))
+
+
+  (defun gbel/project-test-subunit ()
+    "Test project subunit with ~make test~"
+    (interactive)
+    (let ((default-directory (project-root (project-current t))))
+      (shell-command (concat "make test-" test-subunit))))
+
+  ;; Test all project
+  (defun gbel/project-test ()
+    "Test project files with ~make test~"
+    (interactive)
+    (shell-command (concat "cd " default-directory " && make test")))
+#+end_src
+
+* My Key bindings
+
+** Overview
+- Defines a key against a keyboard map.
+
+#+begin_src emacs-lisp :tangle no
+  (define-key KEYMAP KEY DEF)
+#+end_src
+
+- Binds a key to the global keymap, making it available in all buffers
+
+#+begin_src emacs-lisp :tangle no
+  ;; example
+  (global-set-key (kbd "<f1>") #'term)
+#+end_src
+
+- Remap a command
+
+#+begin_src emacs-lisp :tangle no
+  ;; example
+  (define-key (current-global-map) [remap kill-line] 'my-homemade-kill-line)
+#+end_src
+
+- Setting a key for a mode
+
+#+begin_src emacs-lisp :tangle no
+  ;; example
+  (defun mp-add-python-keys ()
+    (local-set-key (kbd "C-c q") 'shell))
+
+  (add-hook 'python-mode-hook #'mp-add-python-keys)
+#+end_src
+
+- Create a new keymap from scratch
+
+#+begin_src emacs-lisp :tangle no
+  ;; example
+  (defvar my-special-map
+    (let ((map (make-sparse-keymap)))
+      (define-key map "s" 'shell)
+      (define-key map "g" 'rgrep)
+      map)
+    "My special key map.")
+#+end_src
+
+More info at https://www.masteringemacs.org/article/mastering-key-bindings-emacs.
+
+** hydra
+Modal editing keymaps that (may) auto-deactivate.
+
+This is a package for GNU Emacs that can be used to tie related commands into
+a family of short bindings with a common prefix - a Hydra.
+
+Link: https://github.com/abo-abo/hydra
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- hydra ---
+  (add-to-list 'load-path "~/tmp/emacs/manual-packages/hydra")
+  (require 'hydra)
+#+end_src
+
+*** hydra-zapping
+Move, search, and jump in buffers/files.
+
+#+begin_src emacs-lisp :tangle yes
+  ;; Stack operations to nest hydras
+  (defvar hydra-stack nil)
+
+  (defun hydra-push (expr)
+    (push `(lambda () ,expr) hydra-stack))
+
+  (defun hydra-pop ()
+    (interactive)    
+    (let ((x (pop hydra-stack)))
+      (when x
+	(funcall x))))
+
+  ;; Search utilities - child hydra of hydra-zapping
+  (defhydra hydra-search
+    (:foreign-keys warn :exit t)
+    "Common search commands"
+    ("i" (progn (consult-imenu) (hydra-pop)) "Current buffer imenu with preview")
+    ("r" (progn (consult-ripgrep) (hydra-pop)) "Search files in dir with ripgrep")
+    ("q" hydra-pop "Quit"))
+
+  ;; Movement and jump keys
+  (defhydra hydra-zapping
+    (:foreign-keys run :exit nil)
+    "Zapping"
+    ("j" backward-char "-1 char")
+    ("l" forward-char "+1 char")
+    ("i" previous-line "-1 line")
+    ("k" next-line "+1 line")
+    ("-" backward-sentence "-1 sentence")
+    ("=" forward-sentence "+1 sentence")  
+    ("/" consult-line "Jump to line")
+    ("." gbel/ripgrep-at-point "rg at point")
+    ("p" consult-project-buffer "Project buffers")
+    ("m" consult-bookmark "Bookmarks")
+    ("s" (progn (hydra-search/body) (hydra-push '(hydra-zapping/body))) "-> search" :exit t)
+    ("q" nil "Quit" :exit t))
+  (global-set-key (kbd "M-z") 'hydra-zapping/body)
+#+end_src
+
+*** hydra-org
+~org-mode~ commands bindings to ~M-o ...~.
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- Org-mode hydra ---
+  (defhydra hydra-org
+    (:foreign-keys run :exit nil)
+    "org-mode hydra"
+    ;; movement
+    ("-" org-backward-sentence "-1 sentence")
+    ("=" org-forward-sentence "+1 sentence")  
+    ("i" org-backward-element "-1 heading")
+    ("k" org-forward-element "+1 heading")
+    ("j" org-up-element "Go to parent heading")
+    ("l" org-down-element "Go to child heading")
+    ("/" consult-org-heading "Jump to heading")
+    ;; tangling
+    ("t" org-babel-tangle "Tangle")
+    ;; time
+    ("o" org-timer-set-timer "Set timer")
+    ("p" org-timer-pause-or-continue "Pause/continue timer")
+    ;; TODOs
+    ("c" org-todo "Cycle TODO")
+    ;; EIN
+    ("e" gbel/ein-exec-next-code-block "EIN exec")
+    ("n" gbel/ein-insert-cell "EIN insert cell")
+    ;; quit
+    ("q" nil "Quit" :exit t))
+  (global-set-key (kbd "M-o") 'hydra-org/body)
+#+end_src
+
+*** hydra-code
+Coding related commands under ~M-c ...~.
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- hydra-code ---
+  (defhydra hydra-code
+    (:foreign-keys warn :exit t)
+    "Coding related commands"
+    ("b" gbel/project-build "Build")
+    ("f" gbel/project-format "Format")
+    ;; testing
+    ;; use M-t to run tests of subunit
+    ("s" gbel/project-set-test-subunit "Set test subunit")
+    ("t" gbel/project-test "Test all")  
+    ("e" eldoc "Eldoc"))
+  (global-set-key (kbd "M-c") 'hydra-code/body)
+#+end_src
+
+** vertico
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- vertico key bindings ---
+
+  ;; Stop vertico completion
+  (define-key vertico-map (kbd "C-f") 'vertico-exit-input)
+#+end_src
+
+** consult
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- consult key bindings ---
+  (define-key (current-global-map) [remap Info-search] 'consult-info)
+
+  ;; C-c
+  (global-set-key (kbd "C-c M-x") 'consult-mode-command)
+  (global-set-key (kbd "C-c h") 'consult-history)
+  (global-set-key (kbd "C-c k") 'consult-kmacro)
+  (global-set-key (kbd "C-c m") 'consult-man)
+  (global-set-key (kbd "C-c i") 'consult-info)
+
+  ;; C-x
+  (global-set-key (kbd "C-x M-:") 'consult-complex-command)     ;; orig. repeat-complex-command
+  (global-set-key (kbd "C-x b") 'consult-buffer)                ;; orig. switch-to-buffer
+  (global-set-key (kbd "C-x 4 b") 'consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+  (global-set-key (kbd "C-x 5 b") 'consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+  (global-set-key (kbd "C-x r b") 'consult-bookmark)            ;; orig. bookmark-jump
+  (global-set-key (kbd "C-x p b") 'consult-project-buffer)      ;; orig. project-switch-to-buffer
+
+  ;; M-...
+  (global-set-key (kbd "M-#") 'consult-register-load)
+	 ;; ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+	 ;; ("C-M-#" . consult-register)
+  (global-set-key (kbd "M-y") 'consult-yank-pop)                ;; orig. yank-pop
+
+  ;; M-g --> goto
+  (global-set-key (kbd "M-g e") 'consult-compile-error)
+  (global-set-key (kbd "M-g f") 'consult-flymake)               ;; Alternative: consult-flycheck
+  (global-set-key (kbd "M-g g") 'consult-goto-line)             ;; orig. goto-line
+  (global-set-key (kbd "M-g M-g") 'consult-goto-line)           ;; orig. goto-line
+  (global-set-key (kbd "M-g o") 'consult-outline)               ;; Alternative: consult-org-heading
+  (global-set-key (kbd "M-g m") 'consult-mark)
+  (global-set-key (kbd "M-g k") 'consult-global-mark)
+  (global-set-key (kbd "M-s i") 'consult-imenu)
+  (global-set-key (kbd "M-s I") 'consult-imenu-multi)
+
+  ;; M-s search
+  (global-set-key (kbd "M-s d") 'consult-find)
+  (global-set-key (kbd "M-s D") 'consult-locate)
+  (global-set-key (kbd "M-s g") 'consult-grep)
+  (global-set-key (kbd "M-s G") 'consult-git-grep)
+  (global-set-key (kbd "M-s r") 'consult-ripgrep)
+  (global-set-key (kbd "M-s l") 'consult-line)
+  (global-set-key (kbd "M-s L") 'consult-line-multi)
+  (global-set-key (kbd "M-s k") 'consult-keep-lines)
+  (global-set-key (kbd "M-s u") 'consult-focus-lines)
+  ;; ;; Isearch integration
+  ;; (global-set-key (kbd "M-s e") 'cconsult-isearch-history)
+  ;; :map isearch-mode-map
+  ;; ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
+  ;; ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
+  ;; ;; Minibuffer history
+  ;; :map minibuffer-local-map
+  ;; ("M-s" . consult-history)                 ;; orig. next-matching-history-element
+  ;; ("M-r" . consult-history)                ;; orig. previous-matching-history-element
+#+end_src
+
+** which-key: help for incomplete command
+~which-key~ is a minor mode for Emacs that displays the key bindings
+following your currently entered incomplete command (a prefix) in a popup.
+
+Link: https://github.com/justbur/emacs-which-key
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- which-key ---
+  (add-to-list 'load-path "~/tmp/emacs/manual-packages/emacs-which-key")
+  (require 'which-key)
+
+  (which-key-mode t)
+  (setq which-key-popup-type 'side-window)
+  (setq which-key-side-window-location 'left)
+  (setq which-key-side-window-max-width 0.38)
+  (setq which-key-idle-delay 0.15)
+#+end_src
+
+** global set key
+Globally set keys
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- globally set keys ---
+  (global-set-key (kbd "M-i") 'completion-at-point)
+  (global-set-key (kbd "<f5>") 'revert-buffer)
+  (global-set-key (kbd "M-e") 'flycheck-first-error)
+  (global-set-key (kbd "M-t") 'gbel/project-test-subunit)
+
+  ;; define backtab
+  (defun un-indent-by-removing-4-spaces ()
+    "remove 4 spaces from beginning of of line"
+    (interactive)
+    (save-excursion
+      (save-match-data
+        (beginning-of-line)
+        ;; get rid of tabs at beginning of line
+        (when (looking-at "^\\s-+")
+          (untabify (match-beginning 0) (match-end 0)))
+        (when (looking-at "^    ")
+          (replace-match "")))))
+  (global-set-key (kbd "<backtab>") 'un-indent-by-removing-4-spaces)
+#+end_src

@@ -1,0 +1,40 @@
+{
+    "workbench.startupEditor": "none",
+    "workbench.colorTheme": "Zenburn",
+    "editor.fontSize": 16,
+    "files.trimTrailingWhitespace": true,
+    "[python]": {
+        "editor.formatOnType": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        },
+    },
+    "editor.formatOnSave": true,
+    "python.formatting.blackPath": "/home/gabri/mambaforge/envs/test/bin/black",
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "--line-length",
+        "100",
+        "--target-version",
+        "py311"
+    ],
+    "isort.path": [
+        "/home/gabri/mambaforge/envs/test/bin/isort"
+    ],
+    "isort.args": [
+        "--line-length",
+        "100",
+        "--py",
+        "311",
+        "--force-alphabetical-sort",
+        "--profile",
+        "black",
+        "--atomic",
+        "--lines-after-imports",
+        "-1 ",
+        "--lines-between-types",
+        "1 ",
+    ],
+    "window.zoomLevel": 1,
+    "excalidraw.theme": "light",
+}
