@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 echo "VS Code --version:" $(code --version)
 echo "VS Code location:" $(which code)

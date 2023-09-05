@@ -18,4 +18,5 @@ ln -s $HOME/.local/python-venv/bin/python$P_VERSION p
 # 4
 echo "----------"
 echo ">>> NOTE: Remember to add $HOME/.local/python-venv/pybin/ to your PATH env variable"
+echo ">>>   or use p -m dotsys --symlinks"
 echo "----------"

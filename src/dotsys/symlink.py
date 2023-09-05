@@ -10,8 +10,9 @@ def create(source_path: pathlib.PosixPath, dest_path: pathlib.PosixPath) -> None
 
     assert source.exists(), f"{source=} is not a file"
 
-    _delete(dest)
-    cmd = f"ln -s {source} {dest}"
+    _delete(dest)  # remove old symlink
+    os.system(f"mkdir -p {dest.parent}")  # create all parent dirs
+    cmd = f"ln -s {source} {dest}"  # create new symlink
     os.system(cmd)
 
 

@@ -5,52 +5,14 @@
 
 *Important* Need to use a bundle obained with the ~auto editor emacs~ tool.
 
-* Manual packages
-Byte compilation was performed with
+* Set path to packages
+Byte compilation can be performed with
 
 - ~emacs -Q -batch -L . -f batch-byte-compile *.el~
 
 #+begin_src emacs-lisp :tangle yes
-  ;; --- location of byte compiled packages ---
-  (add-to-list 'load-path "~/tmp/emacs/pkgs-byte-compiled")
-#+end_src
-
-#+begin_src text :tangle no
-  drwx------  4 gabri gabri 4096 Aug 14 11:50 anaphora/
-  drwx------  8 gabri gabri 4096 Aug 14 12:30 auto-complete/
-  drwx------  4 gabri gabri 4096 Jul 31 10:52 compat/
-  drwx------  3 gabri gabri 4096 Jul 10 15:01 consult/
-  drwx------  4 gabri gabri 4096 Aug  1 15:45 corfu/
-  drwx------  6 gabri gabri 4096 Aug  5 11:49 dash.el/
-  drwx------  5 gabri gabri 4096 Aug 14 12:33 emacs-ctable/
-  drwx------  5 gabri gabri 4096 Aug 14 11:38 emacs-deferred/
-  drwx------  6 gabri gabri 4096 Aug 14 12:31 emacs-epc/
-  drwx------  3 gabri gabri 4096 Aug  4 12:31 emacs-htmlize/
-  drwx------  8 gabri gabri 4096 Aug 14 11:21 emacs-ipython-notebook/
-  drwx------  4 gabri gabri 4096 Aug 14 12:29 emacs-jedi/
-  drwx------  4 gabri gabri 4096 Aug 14 12:35 emacs-python-environment/
-  drwx------  7 gabri gabri 4096 Aug 14 11:28 emacs-request/
-  drwx------  3 gabri gabri 4096 Aug 14 11:55 emacs-web-server/
-  drwx------  3 gabri gabri 4096 Aug 14 11:28 emacs-websocket/
-  drwx------  5 gabri gabri 4096 Jul 10 15:10 emacs-which-key/
-  drwx------  7 gabri gabri 4096 Aug  5 12:29 flycheck/
-  drwx------  3 gabri gabri 4096 Aug  6 10:42 flycheck-eglot/
-  drwx------  4 gabri gabri 4096 Aug  6 11:26 flycheck-inline/
-  drwx------  5 gabri gabri 4096 Aug  1 16:07 go-mode.el/
-  drwx------  6 gabri gabri 4096 Jul 21 17:37 hydra/
-  drwx------  5 gabri gabri 4096 Aug 14 11:58 js2-mode/
-  drwx------  4 gabri gabri 4096 Jul 10 15:05 marginalia/
-  drwx------  6 gabri gabri 4096 Jul 29 14:02 markdown-mode/
-  drwx------  4 gabri gabri 4096 Aug  4 12:34 org-reveal/
-  drwx------  4 gabri gabri 4096 Aug  5 12:29 pkg-info/
-  drwx------  8 gabri gabri 4096 Aug 14 11:52 polymode/
-  drwx------  6 gabri gabri 4096 Aug 14 12:35 popup-el/
-  drwx------  3 gabri gabri 4096 Jul 10 14:16 pulsar/
-  drwx------  5 gabri gabri 4096 Aug 14 11:25 s.el/
-  drwx------  3 gabri gabri 4096 Aug 14 11:30 skewer-mode/
-  drwx------  3 gabri gabri 4096 Aug  5 13:00 tempel/
-  drwx------  4 gabri gabri 4096 Jul 10 14:18 vertico/
-  drwx------  6 gabri gabri 4096 Aug  5 12:51 yaml-mode/
+  (add-to-list 'load-path "~/.emacs.d/elisp")
+  (add-to-list 'load-path "~/.emacs.d/elisp_byte")
 #+end_src
 
 * Startup performance
@@ -60,7 +22,6 @@ Taken from https://github.com/daviwil/dotfiles/blob/master/Emacs.org#startup-per
 use a hook to measure Emacs startup time."
 
 #+begin_src emacs-lisp :tangle yes
-
   ;; -*- lexical-binding: t; -*-
 
   ;; The default is 800 kilobytes.  Measured in bytes.
@@ -233,7 +194,6 @@ Link: https://github.com/protesilaos/pulsar
 
 #+begin_src emacs-lisp :tangle yes
   ;; --- pulsar ---
-  (add-to-list 'load-path '"~/tmp/emacs/manual-packages/pulsar")
   (require 'pulsar)
 
   ; List of functions for which pulsing is enabled
@@ -259,9 +219,6 @@ Link: https://github.com/minad/vertico
 
 #+begin_src emacs-lisp :tangle yes
   ;; -- vertico ---
-  (add-to-list 'load-path "~/tmp/emacs/manual-packages/compat") ;; ! vertico dependency !
-  (add-to-list 'load-path "~/tmp/emacs/manual-packages/vertico")
-  (add-to-list 'load-path "~/tmp/emacs/manual-packages/vertico/extensions")
   (require 'vertico)
   (require 'vertico-buffer)
   (require 'vertico-directory)
@@ -274,6 +231,7 @@ Link: https://github.com/minad/vertico
   (require 'vertico-repeat)
   (require 'vertico-reverse)
   (require 'vertico-unobtrusive)
+  (require 'vertico-directory)
 
   (vertico-mode t)
   (setq vertico-cycle t)
@@ -285,22 +243,7 @@ Link: https://github.com/minad/vertico
   (set-face-attribute 'highlight nil :background "#294F6E" :foreground "#ffaa55")
 
   ;; Persist history over Emacs restarts. Vertico sorts by history position.
-  (use-package savehist
-    :init
-    (savehist-mode))  
-
-  ;; Ido-mode like navigation
-  (use-package vertico-directory
-    :after vertico
-    :ensure nil
-    :demand t
-    ;; More convenient directory navigation commands
-    :bind (:map vertico-map
-		("RET" . vertico-directory-enter)
-		("DEL" . vertico-directory-delete-char)
-		("M-DEL" . vertico-directory-delete-word))
-    ;; Tidy shadowed file names
-    :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+  (savehist-mode t)
 #+end_src
 
 ** orderless: match by regexp or other
@@ -314,12 +257,10 @@ Link: https://github.com/oantolin/orderless
 
 #+begin_src emacs-lisp :tangle yes
   ;; --- orderless ---
-  (use-package orderless
-    :ensure t
-    :after vertico
-    :custom
-    (completion-styles '(orderless basic))
-    (completion-category-overrides '((file (styles basic partial-completion)))))
+  (require 'orderless)
+
+  (setq completion-styles '(orderless basic))
+  (setq completion-category-overrides '((file (styles basic partial-completion))))
 #+end_src
 
 ** consult: search and navigation with completions
@@ -352,7 +293,6 @@ Link: https://github.com/minad/consult
 
 #+begin_src emacs-lisp :tangle yes
   ;; --- consult ---
-  (add-to-list 'load-path "~/tmp/emacs/manual-packages/consult")
   (require 'consult)
   (require 'consult-compile)
   (require 'consult-flymake)
@@ -413,7 +353,6 @@ Link: https://github.com/minad/consult
 
 #+begin_src emacs-lisp :tangle yes
   ;; --- marginalia ---
-  (add-to-list 'load-path "~/tmp/emacs/manual-packages/marginalia")
   (require 'marginalia)
   (marginalia-mode t)
 #+end_src
@@ -441,18 +380,11 @@ Link: https://github.com/abo-abo/ace-window
 
 #+begin_src emacs-lisp :tangle yes
   ;; --- ace window ---
-  (use-package ace-window
-    :ensure t
-    :bind
-    ;; Key binding to switch windows
-    ("C-x o" . ace-window)
-    :init
-    ;; Keys used to navigate windows
-    (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-    ;; Make fonts bigger
-    (custom-set-faces      
-     '(aw-leading-char-face
-       ((t (:inherit ace-jump-face-foreground :height 2.0))))))
+  (require 'ace-window)
+
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  (custom-set-faces
+   '(aw-leading-char-face ((t (:inherit ace-jump-face-foreground :height 2.0)))))
 #+end_src
 
 * Completion
@@ -463,7 +395,6 @@ Corfu enhances in-buffer completion with a small completion popup.
 Link: https://github.com/minad/corfu
 
 #+begin_src emacs-lisp :tangle yes
-  (add-to-list 'load-path "~/tmp/emacs/manual-packages/corfu")
   (require 'corfu)
 
   (global-corfu-mode t)
@@ -540,7 +471,6 @@ the ~org-reveal-root~ path correctly.
 Link: https://github.com/yjwen/org-reveal
 
 #+begin_src emacs-lisp
-  (add-to-list 'load-path "~/tmp/emacs/manual-packages/org-reveal")
   (require 'ox-reveal)
 
   ;; The next line is for macOS,
@@ -554,13 +484,16 @@ Link: https://github.com/yjwen/org-reveal
 All configurations related to programming languages.
 
 ** Auto-complete
+An Intelligent auto-completion extension for Emacs.
+
+Link: https://github.com/auto-complete/auto-complete
 
 #+begin_src emacs-lisp :tangle yes
   ;; --- enable auto-complete-mode by default ---
   (require 'auto-complete)
   (global-auto-complete-mode t)
-
 #+end_src
+
 ** Line numbers
 Add line numbers in all file containing code.
 
@@ -615,7 +548,7 @@ Link: https://github.com/minad/tempel
 
 #+begin_src emacs-lisp :tangle yes
   ;; --- tempel ---
-  (add-to-list 'load-path "~/tmp/emacs/manual-packages/tempel")
+
   (require 'tempel)
   
 
@@ -679,7 +612,6 @@ downloaded separately.
 Link: https://github.com/flycheck/flycheck
 
 #+begin_src emacs-lisp :tangle yes
-  (add-to-list 'load-path "~/tmp/emacs/manual-packages/flycheck")
   (require 'flycheck)
 
   (global-flycheck-mode t)
@@ -692,7 +624,6 @@ errors from Flycheck right below their reporting location, using overlays.
 Link: https://github.com/flycheck/flycheck-inline
 
 #+begin_src emacs-lisp :tangle yes
-  (add-to-list 'load-path "~/tmp/emacs/manual-packages/flycheck-inline")
   (require 'flycheck-inline)
 
   (with-eval-after-load 'flycheck
@@ -707,7 +638,6 @@ checks performed by the LSP server.
 Link: https://github.com/intramurz/flycheck-eglot
 
 #+begin_src emacs-lisp :tangle yes
-  (add-to-list 'load-path "~/tmp/emacs/manual-packages/flycheck-eglot")
   (require 'flycheck-eglot)
 
   (global-flycheck-eglot-mode t)
@@ -719,7 +649,6 @@ Link: https://github.com/jrblevin/markdown-mode
 
 #+begin_src emacs-lisp :tangle yes
   ;; --- markdown-mode ---
-  (add-to-list 'load-path "~/tmp/emacs/manual-packages/markdown-mode")
   (require 'markdown-mode)
 
   (setq markdown-command "multimarkdown")
@@ -738,7 +667,6 @@ This package converts the buffer text and the associated decorations to HTML.
 Link: https://github.com/hniksic/emacs-htmlize
 
 #+begin_src emacs-lisp :tangle yes
-  (add-to-list 'load-path "~/tmp/emacs/manual-packages/emacs-htmlize")
   (require 'htmlize)
 #+end_src
 
@@ -749,7 +677,6 @@ Link: https://github.com/yoshiki/yaml-mode
 
 #+begin_src emacs-lisp :tangle yes
   ;; --- yaml-mode ---
-  (add-to-list 'load-path "~/tmp/emacs/manual-packages/yaml-mode")
   (require 'yaml-mode)
   (add-to-list 'auto-mode-alist '("\\.ya?ml\\'" . yaml-mode))
 #+end_src
@@ -760,7 +687,6 @@ A Dockerfile mode for Emacs.
 Link: https://github.com/spotify/dockerfile-mode
 
 #+begin_src emacs-lisp :tangle yes
-  (add-to-list 'load-path "~/tmp/emacs/manual-packages/dockerfile-mode/")
   (require 'dockerfile-mode)
 #+end_src
 
@@ -771,7 +697,6 @@ Link: https://github.com/hcl-emacs/hcl-mode
 
 #+begin_src emacs-lisp :tangle yes
   ;; --- hcl-mode ---
-  (add-to-list 'load-path "~/tmp/emacs/manual-packages/hcl-mode")
   (require 'hcl-mode)
   (add-to-list 'auto-mode-alist '("\\.hcl\\'" . hcl-mode))
 #+end_src
@@ -781,7 +706,6 @@ Use ~go-mode~ in ~.go~ files.
 
 #+begin_src emacs-lisp :tangle yes
   ;; --- go-mode ---
-  (add-to-list 'load-path "~/tmp/emacs/manual-packages/go-mode.el")
   (require 'go-mode)
   (require 'go-guru)
   (require 'go-rename)
@@ -810,11 +734,7 @@ Configure ~python-mode~ for ~.py~ files with ~jedi~
   ;; (add-hook 'python-mode 'eglot-ensure)
   ;; (with-eval-after-load 'eglot
   ;;   (add-to-list 'eglot-server-programs
-  ;; 	       '(python-mode . ("~/.venvs/syspy/bin/pylsp"))))
-
-  ;; (require 'jedi)
-  ;; (add-hook 'python-mode-hook 'jedi:setup)
-  ;; (setq jedi:complete-on-dot t)
+  ;; 	       '(python-mode . ("~/.local/python-venv/bin/pylsp"))))
 #+end_src
 
 *** EIN: Emacs IPython Notebooks
@@ -824,31 +744,18 @@ allowing you to use Emacs. It also expose IPython features such as code
 evaluation, object inspection and code completion.
 
 Dependencies: s.el, dash.el, websocket, requests, requests-deferred,
-skewer-mode, anaphora, polymode, deferred, js2-mode, simple-httpd, jedi (epc
-(ctable), auto-complete, popup, python-environment)
+skewer-mode, anaphora, polymode, deferred, js2-mode, simple-httpd,
+auto-complete, popup, python-environment)
 
 Link: https://github.com/millejoh/emacs-ipython-notebook
 
 *Usage*
-1. Run ~ein:run~ to start a jupyter server (meaning that Emacs was opened from
+1. Run ~M-x gbel/require-ein~
+2. Run ~ein:run~ to start a jupyter server (meaning that Emacs was opened from
    a terminal after running ~mamba activate ..~)
-2. Create a Python running notebook
-3. Attach the running notebook to a ~ob-ein~ ~org-mode~ file using the ~:session
+3. Create a Python running notebook
+4. Attach the running notebook to a ~ob-ein~ ~org-mode~ file using the ~:session
    http://127.0.0.1:8888/ein_server.ipynb~ header arg
-
-#+begin_src emacs-lisp :tangle yes
-  ;; --- Emacs IPython Notebook package ---
-  (require 'ein)
-  (require 'ein-notebook)
-  (require 'ob-ein)
-
-  ;; for usage with org-babel
-  (setq org-babel-load-languages '((ein . t) (emacs-lisp . t)))
-
-  ;; configure C-c C-c to avoid asking y/n when executing a code
-  ;; block in org-mode 
-  (setq org-confirm-babel-evaluate nil)
-#+end_src
 
 * My Macros
 Macros are a way of recording a sequence of consecutive key-presses and
@@ -921,6 +828,7 @@ Functions to switch between light and dark theme
 
 ** Search
 Search related functions
+
 #+begin_src emacs-lisp :tangle yes
 
   ;; Get the func/class name at point and run ripgrep on it
@@ -994,6 +902,25 @@ Projects related functions
     (shell-command (concat "cd " default-directory " && make test")))
 #+end_src
 
+** EIN
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- Emacs IPython Notebook package ---
+  (defun gbel/require-ein ()
+    (interactive)
+  
+    (require 'ein)
+    (require 'ein-notebook)
+    (require 'ob-ein)
+
+    ;; for usage with org-babel
+    (setq org-babel-load-languages '((ein . t) (emacs-lisp . t)))
+
+    ;; configure C-c C-c to avoid asking y/n when executing a code
+    ;; block in org-mode 
+    (setq org-confirm-babel-evaluate nil))
+#+end_src
+
 * My Key bindings
 
 ** Overview
@@ -1051,7 +978,6 @@ Link: https://github.com/abo-abo/hydra
 
 #+begin_src emacs-lisp :tangle yes
   ;; --- hydra ---
-  (add-to-list 'load-path "~/tmp/emacs/manual-packages/hydra")
   (require 'hydra)
 #+end_src
 
@@ -1152,6 +1078,11 @@ Coding related commands under ~M-c ...~.
 #+begin_src emacs-lisp :tangle yes
   ;; --- vertico key bindings ---
 
+  ;; More convenient directory navigation commands - depends on vertion-directory.el
+  (define-key vertico-map (kbd "RET") 'vertico-directory-enter)
+  (define-key vertico-map (kbd "DEL") 'vertico-directory-delete-char)
+  (define-key vertico-map (kbd "M-DEL") 'vertico-directory-delete-word)
+
   ;; Stop vertico completion
   (define-key vertico-map (kbd "C-f") 'vertico-exit-input)
 #+end_src
@@ -1223,7 +1154,6 @@ Link: https://github.com/justbur/emacs-which-key
 
 #+begin_src emacs-lisp :tangle yes
   ;; --- which-key ---
-  (add-to-list 'load-path "~/tmp/emacs/manual-packages/emacs-which-key")
   (require 'which-key)
 
   (which-key-mode t)
@@ -1242,6 +1172,7 @@ Globally set keys
   (global-set-key (kbd "<f5>") 'revert-buffer)
   (global-set-key (kbd "M-e") 'flycheck-first-error)
   (global-set-key (kbd "M-t") 'gbel/project-test-subunit)
+  (global-set-key (kbd "C-x o") 'ace-window)
 
   ;; define backtab
   (defun un-indent-by-removing-4-spaces ()
