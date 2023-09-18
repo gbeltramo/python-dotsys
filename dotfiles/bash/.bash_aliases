@@ -21,6 +21,9 @@ alias o="open"
 # open Jupyer lab
 alias jup="jupyter lab --port 8899"
 
+# mamba alias 
+alias ma="mamba"
+
 # map Ctrl to All_Caps
 alias nocaps="setxkbmap -option ctrl:nocaps"
 

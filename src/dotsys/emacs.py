@@ -58,6 +58,7 @@ emacs_pkgs = (
     ("https://github.com/intramurz/flycheck-eglot.git", "flycheck-eglot"),
     ("https://github.com/flycheck/flycheck-inline.git", "flycheck-inline"),
     ("https://github.com/dominikh/go-mode.el.git", "go-mode"),
+    ("https://github.com/ppareit/graphviz-dot-mode.git", "graphviz-dot-mode"),
     ("https://github.com/syohex/emacs-hcl-mode.git", "hcl-mode"),
     ("https://github.com/abo-abo/hydra.git", "hydra"),
     ("https://github.com/mooz/js2-mode.git", "js2-mode"),

@@ -643,6 +643,19 @@ Link: https://github.com/intramurz/flycheck-eglot
   (global-flycheck-eglot-mode t)
 #+end_src
 
+
+
+** Graphviz DOT
+Emacs package for working with Graphviz DOT-format files.
+
+Link: https://github.com/ppareit/graphviz-dot-mode
+
+#+begin_src emacs-lisp :tangle yes
+  (require 'graphviz-dot-mode)
+  (add-to-list 'auto-mode-alist '("\\.dot\\'" . graphviz-dot-mode))
+  (setq graphviz-dot-indent-width 4)
+#+end_src
+
 ** markdown
 
 Link: https://github.com/jrblevin/markdown-mode
@@ -699,6 +712,12 @@ Link: https://github.com/hcl-emacs/hcl-mode
   ;; --- hcl-mode ---
   (require 'hcl-mode)
   (add-to-list 'auto-mode-alist '("\\.hcl\\'" . hcl-mode))
+#+end_src
+
+** C
+
+#+begin_src emacs-lisp :tangle yes
+  (setq-default c-basic-offset 4)
 #+end_src
 
 ** Golang
@@ -784,6 +803,31 @@ The following code block contains my named macros.
   ;; Insert EIN cell
   (defalias 'gbel/ein-insert-cell
      (kmacro "C-c C-, s e i n - p y t h o n <return> C-c ' C-x C-="))
+#+end_src
+
+** Graphviz export
+Personal macros used to export a DOT code block in ~org-mode~ to a ~png~ of a
+given width.
+
+The idea is that the next code block containing ~:tangle <FILENAME>.dot~ was
+already exported to ~<FILENAME>.dot~ in the same directory, so we can just run
+a shell command to create a ~png~ from the ~dot~ file.
+
+*Note* These macros depend on the ~dot~ command line utility. On Ubunut-like
+systems install it with ~sudo apt install graphviz~.
+
+*Note* These macros use the ~resize_image~ script, which is written in Python and
+depends on ~ffmpeg~.
+
+#+begin_src emacs-lisp :tangle yes
+  (defalias 'gbel/make-dot-600
+    (kmacro "C-s : t a n g l e <return> C-f C-SPC C-e C-w C-y M-! d o t SPC - T p n g SPC - G d p i = 1 2 0 SPC C-y SPC - o SPC C-y <backspace> <backspace> <backspace> p n g SPC & & SPC r e s i z e _ i m a g e SPC - w SPC 6 0 0 SPC - f SPC C-y <backspace> <backspace> <backspace> p n g <return> C-x o C-x k <return> C-x 0"))
+
+  (defalias 'gbel/make-dot-800
+    (kmacro "C-s : t a n g l e <return> C-f C-SPC C-e C-w C-y M-! d o t SPC - T p n g SPC - G d p i = 1 2 0 SPC C-y SPC - o SPC C-y <backspace> <backspace> <backspace> p n g SPC & & SPC r e s i z e _ i m a g e SPC - w SPC 8 0 0 SPC - f SPC C-y <backspace> <backspace> <backspace> p n g <return> C-x o C-x k <return> C-x 0"))
+
+  (defalias 'gbel/make-dot-1200
+     (kmacro "C-s : t a n g l e <return> C-f C-SPC C-e C-w C-y M-! d o t SPC - T p n g SPC - G d p i = 1 2 0 SPC C-y SPC - o SPC C-y <backspace> <backspace> <backspace> p n g SPC & & SPC r e s i z e _ i m a g e SPC - w SPC 1 2 0 0 SPC - f SPC C-y <backspace> <backspace> <backspace> p n g <return> C-x o C-x k <return> C-x 0"))
 #+end_src
 
 * My Functions
@@ -1050,6 +1094,8 @@ Move, search, and jump in buffers/files.
     ;; EIN
     ("e" gbel/ein-exec-next-code-block "EIN exec")
     ("n" gbel/ein-insert-cell "EIN insert cell")
+    ;; DOT graphs
+    ("d" gbel/make-dot-600 "DOT")
     ;; quit
     ("q" nil "Quit" :exit t))
   (global-set-key (kbd "M-o") 'hydra-org/body)

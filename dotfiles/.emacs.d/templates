@@ -124,10 +124,14 @@ java-mode
 
 (class "public class " (p (file-name-base (or (buffer-file-name) (buffer-name)))) " {" n> r> n "}")
 
-c-mode :when (re-search-backward "^\\S-*$" (line-beginning-position) 'noerror)
+c-mode 
 
 (inc "#include <" (p (concat (file-name-base (or (buffer-file-name) (buffer-name))) ".h")) ">")
 (incc "#include \"" (p (concat (file-name-base (or (buffer-file-name) (buffer-name))) ".h")) "\"")
+
+(db_char "printf(\"" (s value) ": %c\\n\", " (s value) ");" q)
+(db_string "printf(\"" (s value) ": %s\\n\", " (s value) ");" q)
+
 
 org-mode
 
