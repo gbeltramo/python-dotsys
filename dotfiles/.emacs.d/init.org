@@ -52,6 +52,13 @@ Make Emacs user interface more minimal.
   (column-number-mode t)          ;; Show column number in status bar
 #+end_src
 
+** Font size
+
+#+begin_src emacs-lisp :tangle yes
+  ;; font size
+  (set-face-attribute 'default nil :height 115)
+#+end_src
+
 ** Minibuffer within minibuffer
 Enable calling commands, while calling commands.
 
