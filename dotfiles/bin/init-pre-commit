@@ -1,0 +1,76 @@
+#!/usr/bin/env p
+
+long_descr = """
+Description
+-----------
+Create a pre-commit Python script
+
+"""
+
+import os
+import pathlib
+import sys
+
+
+pre_commit_example = """#!/usr/bin/env p
+
+import subprocess
+import sys
+import termcolor    
+
+
+def main():
+    format_cmd = ["p", "-m", "black", "--line-length", "100", "--target-version", "py311", "src/"]
+
+    commands = {"black": format_cmd}
+    check(run_pre_commit(commands))
+
+    
+def run_pre_commit(commands):
+    return_codes = []
+    for name, cmd in commands.items():
+        res = subprocess.run(cmd, capture_output=True)
+        msg_stdout = res.stdout.decode('utf-8')
+        msg_stderr = res.stderr.decode('utf-8')
+
+        rc = int((res.returncode != 0) or ('reformatted' in msg_stderr))
+        return_codes.append(int(rc))
+
+        print(f"{name} | STDOUT: {msg_stdout}")
+        print(f"{name} | STDERR: {msg_stderr}")
+        print(f"{name} | return code: {rc}")
+
+    return return_codes
+
+
+def check(return_codes):
+    if any([rc != 0 for rc in return_codes]):
+        print(
+            termcolor.colored("Error: .git/hooks/pre-commit stopped the commit operation", "red"),
+            file=sys.stderr
+        )
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
+"""
+
+
+def main():
+    hooks_dir = (pathlib.Path(".git") / "hooks").absolute()
+    if not hooks_dir.is_dir():
+        print(f"Error: {hooks_dir} is not a directory")
+        sys.exit(1)
+
+    if (hooks_dir / "pre-commit").exists():
+        print(f"Error: {hooks_dir / 'pre-commit'} already exists")
+        sys.exit(1)
+
+    with open(".git/hooks/pre-commit", "w") as pre_commit_file:
+        pre_commit_file.write(pre_commit_example)
+    os.system("chmod a+x .git/hooks/pre-commit")
+
+
+if __name__ == "__main__":
+    main()

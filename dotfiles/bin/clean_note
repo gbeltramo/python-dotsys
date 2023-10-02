@@ -20,14 +20,14 @@ def main():
 
 def parse_arguments():
     """Get input `note_filename`."""
-    
+
     parser = argparse.ArgumentParser(
-        prog="clean_note",
-        description="Delete 'bad' lines and multiple newlines from .note file"
+        prog="clean_note", description="Delete 'bad' lines and multiple newlines from .note file"
     )
 
     parser.add_argument(
-        "-f", "--note_filename",
+        "-f",
+        "--note_filename",
         help="A .note filename",
         type=str,
         default="scratch.note",
@@ -40,19 +40,19 @@ def parse_arguments():
 
 def validate_arguments(args):
     """Check that the input filename is valid and exists."""
-    
+
     assert isinstance(args.note_filename, str)
 
     absolute_path = pathlib.Path(args.note_filename).absolute()
     assert absolute_path.exists(), f"The note file={absolute_path} does not exist"
-    
+
     _, note_ext = os.path.splitext(args.note_filename)
     assert note_ext == ".note", f"Wrong {note_ext} extension"
 
-    
+
 def clean_note_file(args):
     """Remove #+RESULTS lines from .note file and remove multiple consucuite newlines."""
-    
+
     # Read all lines
     with open(args.note_filename, "r") as in_file:
         original_lines = in_file.readlines()
@@ -71,7 +71,7 @@ def clean_note_file(args):
 
     # Remove any consecutive "\n" lines
     final_lines = []
-    
+
     skip_line = False
     for idx, line in enumerate(good_lines):
         if line != "\n":
@@ -83,13 +83,13 @@ def clean_note_file(args):
         elif line == "\n" and skip_line:
             continue
         else:
-            raise ValueError(f"The if/else logic is wrong at line={line} idx={idx}")            
-            
+            raise ValueError(f"The if/else logic is wrong at line={line} idx={idx}")
+
     # Write final lines
     text = "".join(final_lines)
     with open(args.note_filename, "w") as out_file:
         out_file.write(text)
-    
+
 
 if __name__ == "__main__":
     main()
