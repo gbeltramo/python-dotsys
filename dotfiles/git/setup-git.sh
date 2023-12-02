@@ -22,6 +22,8 @@ git config --global alias.a "add"
 git config --global alias.c "commit"
 git config --global alias.ac "commit --all"
 git config --global alias.w "worktree"
+git config --global alias.p "pull"
+git config --global alias.pa '!git pull && git submodule update --init --recursive'
 
 # reflog config
 git config --global core.logAllRefUpdates true

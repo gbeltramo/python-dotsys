@@ -49,6 +49,7 @@ emacs_pkgs = (
     ("https://github.com/kiwanami/emacs-deferred.git", "deferred"),
     ("https://github.com/hniksic/emacs-htmlize.git", "htmlize"),
     ("https://github.com/millejoh/emacs-ipython-notebook.git", "ipython-notebook"),
+    ("https://github.com/Emacs-Kotlin-Mode-Maintainers/kotlin-mode.git", "kotlin-mode"),
     ("https://github.com/tkf/emacs-python-environment.git", "python-environment"),
     ("https://github.com/tkf/emacs-request.git", "request"),
     ("https://github.com/skeeto/emacs-web-server.git", "web-server"),

@@ -498,7 +498,7 @@ Link: https://github.com/auto-complete/auto-complete
 #+begin_src emacs-lisp :tangle yes
   ;; --- enable auto-complete-mode by default ---
   (require 'auto-complete)
-  (global-auto-complete-mode t)
+  ;; (global-auto-complete-mode t)
 #+end_src
 
 ** Line numbers
@@ -651,7 +651,6 @@ Link: https://github.com/intramurz/flycheck-eglot
 #+end_src
 
 
-
 ** Graphviz DOT
 Emacs package for working with Graphviz DOT-format files.
 
@@ -725,6 +724,16 @@ Link: https://github.com/hcl-emacs/hcl-mode
 
 #+begin_src emacs-lisp :tangle yes
   (setq-default c-basic-offset 4)
+#+end_src
+
+** Kotlin
+~kotlin-mode~ in ~.kt~ files.
+
+#+begin_src emacs-lisp :tangle yes
+  ;; --- kotlin-mode ---
+  (require 'kotlin-mode)
+
+  (add-to-list 'auto-mode-alist '("\\.kt\\'" . kotlin-mode))
 #+end_src
 
 ** Golang

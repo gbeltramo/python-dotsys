@@ -14,12 +14,13 @@ extensions=(
     "ms-python.python"               # MS Python
     "ms-python.isort"                # Python imports organization
     "vlanguage.vscode-vlang"         # V programming language
+    "mathiasfrohlich.kotlin"         # Kotlin programming language
     "golang.go"                      # Go programming language
     "aaron-bond.better-comments"     # Colored comments
     "lfs.vscode-emacs-friendly"      # Emacs key bindings
     "yzhang.markdown-all-in-one"     # Markdown All in One
     "ryanolsonx.zenburn"             # Zenburn theme
-    "bungcip.better-toml"            # TOML syntax
+    "tamasfe.even-better-toml"       # TOML syntax
     "pomdtr.excalidraw-editor"       # ExcaliDraw diagrams
     "bierner.markdown-mermaid"       # Mermaid in Markdown
     "lbauskar.kanban"                # Kanban board

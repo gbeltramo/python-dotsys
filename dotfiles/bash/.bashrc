@@ -121,6 +121,7 @@ PS1='[\[\033[34m\]\u@$(hostname -i)\[\033[0m\]] \w \[\033[33m\]$(__git_ps1 " (%s
 [[ ":$PATH:" != *":$HOME/.local/python-venv/pybin:"* ]] && export PATH="$HOME/.local/python-venv/pybin:${PATH}"
 [[ ":$PATH:" != *":/usr/local/go/bin:"* ]] && export PATH="/usr/local/go/bin:${PATH}"
 [[ ":$PATH:" != *":$HOME/go/bin:"* ]] && export PATH="$HOME/go/bin:${PATH}"
+[[ ":$PATH:" != *":$HOME/kotlin_bin:"* ]] && export PATH="$HOME/kotlin_bin:${PATH}"
 
 
 # --- Format of `ps` command
