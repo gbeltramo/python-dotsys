@@ -3,7 +3,11 @@
 #+title: Emacs 29 Configuration
 #+author: Gabriele Beltramo
 
-*Important* Need to use a bundle obained with the ~auto editor emacs~ tool.
+*Important* Need to
+- use a bundle obained with the ~p -m dotsys.emacs -p~ tool.
+- byte compile packages
+- tangle this file with ~M-x org-babel-tangle~, so to create
+  ~$HOME/.emacs.d/init.el~
 
 * Set path to packages
 Byte compilation can be performed with

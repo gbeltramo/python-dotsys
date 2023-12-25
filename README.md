@@ -67,4 +67,5 @@ bash ~/.dotfiles/ssh/setup-ssh.sh
 p -m dotsys.emacs --packages
 ```
 
-
+**Note** You also need to byte compile the Elisp packages and tangle the
+`init.org` config file.

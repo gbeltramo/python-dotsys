@@ -11,6 +11,7 @@ import dotsys.bash as bash
 import dotsys.bin as bin_dir
 import dotsys.emacs as emacs
 import dotsys.mamba as mamba
+import dotsys.nuke as nuke
 import dotsys.tmux as tmux
 
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Setup `g` alias with symlink
-cd /usr/local/bin/ && sudo ln -s $(which git) g
+[[ ! -f /usr/local/bin/g ]] && cd /usr/local/bin/ && sudo ln -s $(which git) g
 
 # personal git config
 git config --global user.name "Gabriele Beltramo"
@@ -15,7 +15,7 @@ git config --global alias.sv "status --long"
 git config --global alias.d "diff --stat HEAD"
 git config --global alias.dv "diff HEAD"
 git config --global alias.g "log --date=format:'%d/%m/%y %H:%M' --graph --pretty=format:'%C(auto, yellow)%h%Creset%C(auto, green)%d%Creset %C(auto, blue)%an%Creset %ad %C(auto, green)|%Creset %s' --all"
-git config --global alias.gv "log --graph --stat --date=format:'%d/%m/%y %H:%M' --pretty=format:'%C(auto, yellow)%h%Creset%C(auto, green)%d%Creset %C(auto, blue)%an%Creset %ad %C(auto, green)%n%CresetSubject: %s%n%b%n' --all"
+git config --global alias.gv "log --graph --/usr/local/bin/stat --date=format:'%d/%m/%y %H:%M' --pretty=format:'%C(auto, yellow)%h%Creset%C(auto, green)%d%Creset %C(auto, blue)%an%Creset %ad %C(auto, green)%n%CresetSubject: %s%n%b%n' --all"
 git config --global alias.b "branch --all"
 git config --global alias.bv "branch --all --verbose"
 git config --global alias.a "add"
