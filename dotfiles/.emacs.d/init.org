@@ -654,7 +654,6 @@ Link: https://github.com/intramurz/flycheck-eglot
   (global-flycheck-eglot-mode t)
 #+end_src
 
-
 ** Graphviz DOT
 Emacs package for working with Graphviz DOT-format files.
 
@@ -795,6 +794,13 @@ Link: https://github.com/millejoh/emacs-ipython-notebook
 3. Create a Python running notebook
 4. Attach the running notebook to a ~ob-ein~ ~org-mode~ file using the ~:session
    http://127.0.0.1:8888/ein_server.ipynb~ header arg
+
+** Zig
+
+#+begin_src emacs-lisp :tangle yes
+  (add-to-list 'load-path "/home/gabri/tmp/zig-lang/zig-mode")
+  (require 'zig-mode)
+#+end_src
 
 * My Macros
 Macros are a way of recording a sequence of consecutive key-presses and
