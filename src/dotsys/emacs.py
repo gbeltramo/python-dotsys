@@ -76,6 +76,8 @@ emacs_pkgs = (
     ("https://github.com/minad/tempel.git", "tempel"),
     ("https://github.com/minad/vertico.git", "vertico"),
     ("https://github.com/yoshiki/yaml-mode.git", "yaml-mode"),
+    ("https://github.com/purcell/emacs-reformatter", "reformatter"), # Zig dep
+    ("https://github.com/ziglang/zig-mode", "zig-mode"),
 )
 
 

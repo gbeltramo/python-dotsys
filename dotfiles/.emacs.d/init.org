@@ -798,7 +798,6 @@ Link: https://github.com/millejoh/emacs-ipython-notebook
 ** Zig
 
 #+begin_src emacs-lisp :tangle yes
-  (add-to-list 'load-path "/home/gabri/tmp/zig-lang/zig-mode")
   (require 'zig-mode)
 #+end_src
 
