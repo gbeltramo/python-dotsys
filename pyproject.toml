@@ -1,9 +1,7 @@
 [project]
 name = "dotsys"
 version = "0.2.0"
-authors = [
-    {name="Gabriele Beltramo", email="hello@gbeltramo.com"},
-]
+authors = [{ name = "Gabriele Beltramo", email = "hello@gbeltramo.com" }]
 description = "A Python package to manage config files and general system configuration."
 readme = "README.md"
 requires-python = ">=3.8,<3.12"
@@ -19,10 +17,10 @@ build-backend = "setuptools.build_meta"
 [tool.bumpver]
 current_version = "0.2.0"
 version_pattern = "MAJOR.MINOR.PATCH"
-commit_message  = "Bump version {old_version} -> {new_version}"
-commit          = true
-tag             = true
-push            = false
+commit_message = "Bump version {old_version} -> {new_version}"
+commit = true
+tag = true
+push = false
 
 
 [tool.bumpver.file_patterns]

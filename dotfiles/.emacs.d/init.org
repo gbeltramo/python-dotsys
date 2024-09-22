@@ -544,7 +544,7 @@ https://cestlaz.github.io/posts/better-comments/#.V2snrt9vH0o
     (font-lock-add-keywords
      nil
      '(("\\s TODO \\(.+\\)" 1 'font-lock-comment-todo prepend)
-       ("\\s NOTE \\(.+\\)" 1 'font-lock-comment-note prepend))))
+       ("\\s Note: \\(.+\\)" 1 'font-lock-comment-note prepend))))
 
   (add-hook 'prog-mode-hook 'add-custom-keyw)
 #+end_src
@@ -595,12 +595,16 @@ Link: https://github.com/minad/tempel
 Disable ~eldoc~ and use ~M-c e~ instead if necessary.
 
 #+begin_src emacs-lisp :tangle yes
-  ;; --- no eldoc ---
-  ;; use M-c e instead
-  (defun gbel/disable-eldoc ()
-    (eldoc-mode -1))
-  (add-hook 'prog-mode-hook #'gbel/disable-eldoc)
-
+  ;; --- eldoc on demand ---
+  (add-hook
+   'eglot-managed-mode-hook
+   (lambda ()
+     ;; we want eglot to setup callbacks from eldoc, but we don't want eldoc
+     ;; running after every command. As a workaround, we disable it after we just
+     ;; enabled it. Now calling `M-x eldoc` will put the help we want in the eldoc
+     ;; buffer. Alternatively we could tell eglot to stay out of eldoc, and add
+     ;; the hooks manually, but that seems fragile to updates in eglot.
+     (eldoc-mode -1)))
 #+end_src
 
 *** flymake
@@ -755,7 +759,6 @@ Use ~go-mode~ in ~.go~ files.
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
                  '(go-mode . ("~/go/bin/gopls"))))
-
   (font-lock-add-keywords 'go-mode
                           '(("\\<\\(FIXME\\):" 1 'font-lock-warning-face prepend)
                             ("\\<\\(and\\|or\\|not\\)\\>" . 'font-lock-keyword-face)))
@@ -767,12 +770,16 @@ Configure ~python-mode~ for ~.py~ files with ~jedi~
 #+begin_src emacs-lisp :tangle yes
   ;; --- python-mode ---
   (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+  (add-to-list 'auto-mode-alist '("\\.pyx\\'" . python-mode)) ;; cython
 
+  ;; Note: for some reason pylsp refuses to work
   ;; ;; eglot LSP support
-  ;; (add-hook 'python-mode 'eglot-ensure)
+  ;; (add-hook 'python-mode-hook 'eglot-ensure)
+
   ;; (with-eval-after-load 'eglot
   ;;   (add-to-list 'eglot-server-programs
-  ;; 	       '(python-mode . ("~/.local/python-venv/bin/pylsp"))))
+  ;;                '(python-mode . ("/home/gabri/.local/python-venv/bin/pylsp"))))
+
 #+end_src
 
 *** EIN: Emacs IPython Notebooks
@@ -798,7 +805,15 @@ Link: https://github.com/millejoh/emacs-ipython-notebook
 ** Zig
 
 #+begin_src emacs-lisp :tangle yes
+  ;; --- zig mode ---
   (require 'zig-mode)
+
+  ;; eglot LSP support
+  (add-hook 'zig-mode-hook 'eglot-ensure)
+
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 '(zig-mode . ("/usr/local/bin/zls"))))
 #+end_src
 
 * My Macros
@@ -899,7 +914,6 @@ Functions to switch between light and dark theme
 Search related functions
 
 #+begin_src emacs-lisp :tangle yes
-
   ;; Get the func/class name at point and run ripgrep on it
   (defun gbel/ripgrep-at-point ()
     "Run consult-ripgrep at point"
@@ -1064,31 +1078,35 @@ Move, search, and jump in buffers/files.
     (interactive)    
     (let ((x (pop hydra-stack)))
       (when x
-	(funcall x))))
+        (funcall x))))
 
   ;; Search utilities - child hydra of hydra-zapping
-  (defhydra hydra-search
-    (:foreign-keys warn :exit t)
-    "Common search commands"
-    ("i" (progn (consult-imenu) (hydra-pop)) "Current buffer imenu with preview")
-    ("r" (progn (consult-ripgrep) (hydra-pop)) "Search files in dir with ripgrep")
-    ("q" hydra-pop "Quit"))
+  ;; (defhydra hydra-search
+  ;;   (:foreign-keys warn :exit t)
+  ;;   "Common search commands"
+  ;;   ("i" (progn (consult-imenu) (hydra-pop)) "Current buffer imenu with preview")
+  ;;   ("r" (progn (consult-ripgrep) (hydra-pop)) "Search files in dir with ripgrep")
+  ;;   ("q" hydra-pop "Quit"))
 
-  ;; Movement and jump keys
+  ;; ;; Movement and jump keys
   (defhydra hydra-zapping
     (:foreign-keys run :exit nil)
     "Zapping"
-    ("j" backward-char "-1 char")
-    ("l" forward-char "+1 char")
-    ("i" previous-line "-1 line")
-    ("k" next-line "+1 line")
-    ("-" backward-sentence "-1 sentence")
-    ("=" forward-sentence "+1 sentence")  
-    ("/" consult-line "Jump to line")
-    ("." gbel/ripgrep-at-point "rg at point")
-    ("p" consult-project-buffer "Project buffers")
-    ("m" consult-bookmark "Bookmarks")
-    ("s" (progn (hydra-search/body) (hydra-push '(hydra-zapping/body))) "-> search" :exit t)
+    ("m" consult-bookmark "Marks")
+    ("d" project-find-file "Dir")
+    ("i" consult-imenu "Imenu")
+    ("o" occur "Occur")
+    ("f" consult-ripgrep "Find")
+    ("b" consult-project-buffer "Buffers")
+    ("." gbel/ripgrep-at-point "Grep")
+    ("c" comment-region "Comment")
+    ("u" uncomment-region "Uncomment")
+    ("e" eldoc "Eldoc")
+    ("h" backward-char "<")
+    ("j" next-line "v")
+    ("k" previous-line "^")
+    ("l" forward-char ">")
+    ;; ("s" (progn (hydra-search/body) (hydra-push '(hydra-zapping/body))) "-> search" :exit t)
     ("q" nil "Quit" :exit t))
   (global-set-key (kbd "M-z") 'hydra-zapping/body)
 #+end_src
@@ -1142,6 +1160,12 @@ Coding related commands under ~M-c ...~.
     ("t" gbel/project-test "Test all")  
     ("e" eldoc "Eldoc"))
   (global-set-key (kbd "M-c") 'hydra-code/body)
+#+end_src
+
+** Eldoc
+
+#+begin_src emacs-lisp :tangle yes
+  (global-set-key (kbd "C-.") #'eldoc)
 #+end_src
 
 ** vertico
@@ -1259,3 +1283,5 @@ Globally set keys
           (replace-match "")))))
   (global-set-key (kbd "<backtab>") 'un-indent-by-removing-4-spaces)
 #+end_src
+
+

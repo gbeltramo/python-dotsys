@@ -42,3 +42,9 @@ alias ps="ps fax"
 
 # GNU time command with more info
 alias t='command time -f "---\nProgram name: %C\nTotal time (minutes:seconds): %E\nUser mode: %U\nKernel mode: %S\nAverage CPU time: %P\nAverage (data+stack+text) memory usage (Kilobytes): %K\nExist status: %x"'
+
+# For convinience of use with minikube
+alias kubectl="minikube kubectl --"
+
+# bat replacement for cat
+alias cat="batcat --pager never --theme zenburn"

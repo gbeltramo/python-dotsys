@@ -135,7 +135,7 @@ umask 077
 
 # --- EDITOR and PAGER
 export EDITOR="emacs -nw -Q"
-export PAGER=less
+export PAGER="batcat --theme zenburn"
 
 
 # --- Aliases
@@ -166,3 +166,4 @@ fi
 if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
     tmux attach -t base || tmux new -s base
 fi
+. "$HOME/.cargo/env"

@@ -9,7 +9,7 @@ sudo apt install --yes python$P_VERSION python$P_VERSION-dev python$P_VERSION-ve
 # 2
 /usr/bin/python$P_VERSION -m venv $HOME/.local/python-venv
 $HOME/.local/python-venv/bin/python$P_VERSION -m pip install -U setuptools wheel pip
-$HOME/.local/python-venv/bin/python$P_VERSION -m pip install termcolor black numpy build pytest pydub
+$HOME/.local/python-venv/bin/python$P_VERSION -m pip install termcolor black numpy build pytest pydub easydict
 
 # 3
 mkdir -p $HOME/.local/python-venv/pybin/ && cd $HOME/.local/python-venv/pybin/
@@ -20,3 +20,9 @@ echo "----------"
 echo ">>> NOTE: Remember to add $HOME/.local/python-venv/pybin/ to your PATH env variable"
 echo ">>>   or use p -m dotsys --symlinks"
 echo "----------"
+
+# 5
+sudo apt install htop tree
+sudo apt install --yes bat # better cat
+sudo apt install --yes duf # better df -h
+sudo apt install --yes btop # better htop
