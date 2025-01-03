@@ -1,0 +1,53 @@
+font-family = JetBrainsMono Nerd Font
+font-size = 14
+theme = Novel
+
+fullscreen = false
+
+window-decoration = false
+window-padding-x = 2
+window-padding-y = 2
+gtk-wide-tabs = false
+window-save-state = always
+window-inherit-working-directory = false
+working-directory = home
+
+shell-integration-features = no-cursor,sudo,no-title
+cursor-style = block
+bold-is-bright = true
+mouse-hide-while-typing = true
+mouse-scroll-multiplier = 2
+copy-on-select = clipboard
+click-repeat-interval = 100
+
+# keybindings
+keybind = ctrl+q>r=reload_config
+keybind = ctrl+l=clear_screen
+keybind = ctrl+q>q=quit
+
+keybind = ctrl+q>n=new_window
+keybind = ctrl+q>c=new_tab
+keybind = ctrl+q>w=close_surface
+
+keybind = ctrl+q>shift+l=next_tab
+keybind = ctrl+q>shift+h=previous_tab
+keybind = ctrl+q>comma=move_tab:-1
+keybind = ctrl+q>period=move_tab:1
+
+# quick tab switch
+keybind = ctrl+q>1=goto_tab:1
+keybind = ctrl+q>2=goto_tab:2
+keybind = ctrl+q>3=goto_tab:3
+keybind = ctrl+q>4=goto_tab:4
+keybind = ctrl+q>5=goto_tab:5
+keybind = ctrl+q>6=goto_tab:6
+keybind = ctrl+q>7=goto_tab:7
+keybind = ctrl+q>8=goto_tab:8
+keybind = ctrl+q>9=goto_tab:9
+
+
+keybind = ctrl+[=decrease_font_size:1
+keybind = ctrl+]=increase_font_size:1
+
+keybind = ctrl+c=copy_to_clipboard
+keybind = ctrl+v=paste_from_clipboard

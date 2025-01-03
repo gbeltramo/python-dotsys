@@ -27,15 +27,13 @@ alias ma="mamba --no-banner"
 # map Ctrl to All_Caps
 alias nocaps="setxkbmap -option ctrl:nocaps"
 
-# pycodestyle with custom line length
-alias pycodestyle="pycodestyle --max-line-length=100"
-
 # remove cached python files in project
 alias pyclean='find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf'
 
 # quick editor
 alias e='emacs --no-window-system --quick --eval "(progn (global-display-line-numbers-mode t) (column-number-mode t) (load-theme '"'"'tango-dark) (ido-mode t) (fset '"'"'yes-or-no-p '"'"'y-or-n-p))"'
 alias ee="emacs 1>&2 > /dev/null &"
+alias m="micro"
 
 # more processes info
 alias ps="ps fax"
@@ -47,4 +45,4 @@ alias t='command time -f "---\nProgram name: %C\nTotal time (minutes:seconds): %
 alias kubectl="minikube kubectl --"
 
 # bat replacement for cat
-alias cat="batcat --pager never --theme zenburn"
+alias bat="batcat --theme ansi"

@@ -134,8 +134,8 @@ umask 077
 
 
 # --- EDITOR and PAGER
-export EDITOR="emacs -nw -Q"
-export PAGER="batcat --theme zenburn"
+export EDITOR="micro"
+export PAGER="less"
 
 
 # --- Aliases
@@ -143,27 +143,4 @@ if [ -f ~/.bash_aliases ]; then
 . ~/.bash_aliases
 fi
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/gabri/miniforge3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/gabri/miniforge3/etc/profile.d/conda.sh" ]; then
-        . "/home/gabri/miniforge3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/gabri/miniforge3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-
-if [ -f "/home/gabri/miniforge3/etc/profile.d/mamba.sh" ]; then
-    . "/home/gabri/miniforge3/etc/profile.d/mamba.sh"
-fi
-# <<< conda initialize <<<
-
-# start tmux when opening a new terminal
-if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
-    tmux attach -t base || tmux new -s base
-fi
 . "$HOME/.cargo/env"

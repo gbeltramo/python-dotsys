@@ -7,7 +7,7 @@
 git config --global user.name "Gabriele Beltramo"
 git config --global user.email "hello@gbeltramo.com"
 git config --global init.defaultBranch main
-git config --global core.editor "emacs --no-window-system --quick"
+git config --global core.editor "micro"
 
 # git subcommands
 git config --global alias.s "status --short --branch --untracked-files=all"
