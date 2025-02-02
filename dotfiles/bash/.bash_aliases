@@ -1,3 +1,5 @@
+# -*- mode: sh -*-
+
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
@@ -45,4 +47,8 @@ alias t='command time -f "---\nProgram name: %C\nTotal time (minutes:seconds): %
 alias kubectl="minikube kubectl --"
 
 # bat replacement for cat
-alias bat="batcat --theme ansi"
+# Note: need to "cd /usr/local/bin && ln -s /usr/bin/batcat bat"
+alias bat="bat --theme ansi"
+
+# Temp fix for ghostty terminal
+alias btop="btop --utf-force"

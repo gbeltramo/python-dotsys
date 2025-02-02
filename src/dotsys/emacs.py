@@ -1,7 +1,6 @@
 import argparse
 import dotsys.symlink as symlink
 import dotsys.utils as utils
-import pathlib
 import os
 
 from typing import Tuple
@@ -76,8 +75,11 @@ emacs_pkgs = (
     ("https://github.com/minad/tempel.git", "tempel"),
     ("https://github.com/minad/vertico.git", "vertico"),
     ("https://github.com/yoshiki/yaml-mode.git", "yaml-mode"),
-    ("https://github.com/purcell/emacs-reformatter", "reformatter"), # Zig dep
+    ("https://github.com/purcell/emacs-reformatter", "reformatter"),  # Zig dep
     ("https://github.com/ziglang/zig-mode", "zig-mode"),
+    ("https://github.com/tkf/emacs-jedi.git", "python-jedi"),  # jedi
+    ("https://github.com/kiwanami/emacs-epc.git", "epc"),  # jedi -> epc
+    ("https://github.com/kiwanami/emacs-ctable.git", "ctable"),  # jedi -> epc -> ctable
 )
 
 
@@ -102,6 +104,8 @@ def download_packages(emacs_pkgs: Tuple[Tuple[str, str]]) -> None:
             cp_elisp_subdir_cmd = f"cp {source_path / pkg_dir / '*/*.el'} {elisp_path}"
             os.system(cp_elisp_cmd)
             os.system(cp_elisp_subdir_cmd)
+        else:
+            print(f"INFO: {source_path / pkg_dir} is a directory")
 
     if elisp_path.is_dir():
         rm_test_elisp = f"rm {elisp_path / '*test*.el'}"

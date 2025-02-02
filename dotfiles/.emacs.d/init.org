@@ -1,6 +1,6 @@
 #+options: toc:2
 #+startup: overview
-#+title: Emacs 29 Configuration
+#+title: Emacs 29.4 Configuration
 #+author: Gabriele Beltramo
 
 *Important* Need to
@@ -756,30 +756,42 @@ Use ~go-mode~ in ~.go~ files.
 
   ;; eglot LSP support
   (add-hook 'go-mode 'eglot-ensure)
+
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
-                 '(go-mode . ("~/go/bin/gopls"))))
-  (font-lock-add-keywords 'go-mode
-                          '(("\\<\\(FIXME\\):" 1 'font-lock-warning-face prepend)
-                            ("\\<\\(and\\|or\\|not\\)\\>" . 'font-lock-keyword-face)))
+                 '(go-mode . ("~/Lang/go/bin/gopls"))))
+
+  (add-hook 'go-mode-hook
+            (lambda () (add-hook 'before-save-hook 'eglot-format nil 'local)))
 #+end_src
 
 ** Python
-Configure ~python-mode~ for ~.py~ files with ~jedi~
+Configure ~python-mode~ for ~.py~ files with
 
 #+begin_src emacs-lisp :tangle yes
   ;; --- python-mode ---
   (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
   (add-to-list 'auto-mode-alist '("\\.pyx\\'" . python-mode)) ;; cython
 
+  ;; Use Jedi autocompletions.
+  ;; 1. Requires epc and auto-complete and ctables
+  ;; 2. Requires python venv with dependencies for jediepcserver
+  (autoload 'jedi:setup "jedi" nil t)
+  ;; Set the following after ~pip install setup.py~
+  (setq jedi:server-command '("jediepcserver"))
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (setq jedi:complete-on-dot t) ; OPTIONAL
+
   ;; Note: for some reason pylsp refuses to work
-  ;; ;; eglot LSP support
-  ;; (add-hook 'python-mode-hook 'eglot-ensure)
+  ;; eglot LSP support
+  (add-hook 'python-mode-hook 'eglot-ensure)
 
   ;; (with-eval-after-load 'eglot
-  ;;   (add-to-list 'eglot-server-programs
-  ;;                '(python-mode . ("/home/gabri/.local/python-venv/bin/pylsp"))))
+  (add-to-list 'eglot-server-programs
+               '(python-mode . ("ruff" "server"))) ;; Note: "ruff" "server" can also be used
 
+  (add-hook 'python-mode-hook
+             (lambda () (add-hook 'before-save-hook 'eglot-format nil 'local)))
 #+end_src
 
 *** EIN: Emacs IPython Notebooks
@@ -813,7 +825,7 @@ Link: https://github.com/millejoh/emacs-ipython-notebook
 
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
-                 '(zig-mode . ("/usr/local/bin/zls"))))
+                 '(zig-mode . ("~/Lang/zig/bin/zls"))))
 #+end_src
 
 * My Macros
