@@ -23,9 +23,6 @@ alias o="open"
 # open Jupyer lab
 alias jup="jupyter lab --port 8899"
 
-# mamba alias 
-alias ma="mamba --no-banner"
-
 # map Ctrl to All_Caps
 alias nocaps="setxkbmap -option ctrl:nocaps"
 
@@ -48,7 +45,8 @@ alias kubectl="minikube kubectl --"
 
 # bat replacement for cat
 # Note: need to "cd /usr/local/bin && ln -s /usr/bin/batcat bat"
-alias bat="bat --theme ansi"
+alias dog="bat --style=plain --pager=less --theme ansi"
+alias dog-full="bat --style=full --pager=less --theme ansi"
 
 # Temp fix for ghostty terminal
 alias btop="btop --utf-force"

@@ -1,11 +1,11 @@
 #+options: toc:2
 #+startup: overview
-#+title: Emacs 29.4 Configuration
+#+title: Emacs 30.2 Configuration
 #+author: Gabriele Beltramo
 
 *Important* Need to
 - use a bundle obained with the ~p -m dotsys.emacs -p~ tool.
-- byte compile packages
+- byte compile packages with ~M-x byte-compile-file~
 - tangle this file with ~M-x org-babel-tangle~, so to create
   ~$HOME/.emacs.d/init.el~
 
@@ -770,28 +770,42 @@ Configure ~python-mode~ for ~.py~ files with
 
 #+begin_src emacs-lisp :tangle yes
   ;; --- python-mode ---
+
+  ;; --- start ruff-format.el ---
+  ;; See https://github.com/JoshHayes/emacs-ruff-format/blob/main/ruff-format.el
+  ;; Note: reformatter is a dependency of some other package I'm already using
+  (require 'reformatter)
+
+  (defcustom ruff-format-command "ruff"
+    "Ruff command to use for formatting."
+    :type 'string
+    :group 'ruff-format)
+
+  ;;;###autoload (autoload 'ruff-format-buffer "ruff-format" nil t)
+  ;;;###autoload (autoload 'ruff-format-region "ruff-format" nil t)
+  ;;;###autoload (autoload 'ruff-format-on-save-mode "ruff-format" nil t)
+  (reformatter-define ruff-format
+    :program ruff-format-command
+    :args (list "format" "--stdin-filename" (or (buffer-file-name) input-file))
+    :lighter " RuffFmt"
+    :group 'ruff-format)
+
+  (provide 'ruff-format)
+  ;; --- end ruff-format.el
+
   (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
   (add-to-list 'auto-mode-alist '("\\.pyx\\'" . python-mode)) ;; cython
 
-  ;; Use Jedi autocompletions.
-  ;; 1. Requires epc and auto-complete and ctables
-  ;; 2. Requires python venv with dependencies for jediepcserver
-  (autoload 'jedi:setup "jedi" nil t)
-  ;; Set the following after ~pip install setup.py~
-  (setq jedi:server-command '("jediepcserver"))
-  (add-hook 'python-mode-hook 'jedi:setup)
-  (setq jedi:complete-on-dot t) ; OPTIONAL
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 '(python-base-mode . ("/home/gabri/.venv/bin/ruff" "server"))))
 
-  ;; Note: for some reason pylsp refuses to work
-  ;; eglot LSP support
-  (add-hook 'python-mode-hook 'eglot-ensure)
+  (add-hook 'python-base-mode-hook
+            (lambda ()
+              (eglot-ensure)
+              (add-hook 'after-save-hook 'eglot-format nil t)))
 
-  ;; (with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs
-               '(python-mode . ("ruff" "server"))) ;; Note: "ruff" "server" can also be used
-
-  (add-hook 'python-mode-hook
-             (lambda () (add-hook 'before-save-hook 'eglot-format nil 'local)))
+  (add-hook 'python-mode-hook 'ruff-format-on-save-mode)
 #+end_src
 
 *** EIN: Emacs IPython Notebooks

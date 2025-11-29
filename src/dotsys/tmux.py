@@ -23,7 +23,8 @@ def create_symlinks():
     HOME = utils.get_HOME()
 
     symlink.create(
-        source_path=HOME / ".dotfiles" / "tmux" / ".tmux.conf", dest_path=HOME / ".tmux.conf"
+        source_path=HOME / ".dotfiles" / "tmux" / ".tmux.conf",
+        dest_path=HOME / ".tmux.conf",
     )
 
 

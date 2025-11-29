@@ -23,7 +23,8 @@ def create_symlinks():
     HOME = utils.get_HOME()
 
     symlink.create(
-        source_path=HOME / ".dotfiles" / "mamba" / ".condarc", dest_path=HOME / ".condarc"
+        source_path=HOME / ".dotfiles" / "mamba" / ".condarc",
+        dest_path=HOME / ".condarc",
     )
 
 

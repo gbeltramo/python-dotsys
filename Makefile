@@ -1,6 +1,6 @@
 DIST_NAME := dotsys
 VERSION := 0.2.0
-PYTHON := $(HOME)/.local/python-venv/pybin/p
+PYTHON := $(HOME)/.venv/bin/python
 
 .PHONY: all build install install-editable format clean 
 all: build install test
@@ -21,7 +21,7 @@ test:
 	$(PYTHON) -m pytest --pyargs dotsys -v -rP
 
 format:
-	$(PYTHON) -m black --line-length 100 --target-version py311 .
+	$(PYTHON) -m ruff format .
 
 clean:
 	rm -rf dist/

@@ -16,7 +16,14 @@ def main():
     if platform.system() == "Linux":
         vscode_path = HOME / ".config" / "Code" / "User" / "settings.json"
     elif platform.system() == "Darwin":
-        vscode_path = HOME / "Library" / "Application\ Support" / "Code" / "User" / "settings.json"
+        vscode_path = (
+            HOME
+            / "Library"
+            / "Application\ Support"
+            / "Code"
+            / "User"
+            / "settings.json"
+        )
     else:
         raise ValueError(f"platform={platform.system()} is invalid")
     os.system(f"rm {vscode_path}")

@@ -4,14 +4,14 @@ version = "0.2.0"
 authors = [{ name = "Gabriele Beltramo", email = "hello@gbeltramo.com" }]
 description = "A Python package to manage config files and general system configuration."
 readme = "README.md"
-requires-python = ">=3.8,<3.12"
+requires-python = ">=3.12,<3.15"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
 ]
 
 [build-system]
-requires = ["setuptools>=67.0.0"]
+requires = ["setuptools>=80.0.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.bumpver]

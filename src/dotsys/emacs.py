@@ -23,7 +23,9 @@ def main(args):
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Manage Emacs config and packages")
     parser.add_argument("-s", "--symlinks", action="store_true", help="Create symlinks")
-    parser.add_argument("-p", "--packages", action="store_true", help="Download Emacs packages")
+    parser.add_argument(
+        "-p", "--packages", action="store_true", help="Download Emacs packages"
+    )
     args = parser.parse_args()
 
     return args
@@ -32,7 +34,9 @@ def parse_args() -> argparse.Namespace:
 def create_symlinks() -> None:
     HOME = utils.get_HOME()
 
-    symlink.create(source_path=HOME / ".dotfiles" / ".emacs.d", dest_path=HOME / ".emacs.d")
+    symlink.create(
+        source_path=HOME / ".dotfiles" / ".emacs.d", dest_path=HOME / ".emacs.d"
+    )
 
 
 emacs_pkgs = (
@@ -76,10 +80,7 @@ emacs_pkgs = (
     ("https://github.com/minad/vertico.git", "vertico"),
     ("https://github.com/yoshiki/yaml-mode.git", "yaml-mode"),
     ("https://github.com/purcell/emacs-reformatter", "reformatter"),  # Zig dep
-    ("https://github.com/ziglang/zig-mode", "zig-mode"),
-    ("https://github.com/tkf/emacs-jedi.git", "python-jedi"),  # jedi
-    ("https://github.com/kiwanami/emacs-epc.git", "epc"),  # jedi -> epc
-    ("https://github.com/kiwanami/emacs-ctable.git", "ctable"),  # jedi -> epc -> ctable
+    ("https://codeberg.org/ziglang/zig-mode.git", "zig-mode"),
 )
 
 

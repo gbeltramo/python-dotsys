@@ -1,27 +1,15 @@
 #!/usr/bin/env bash
 
-# 1
 sudo apt update
-sudo apt full-upgrade
-export P_VERSION=3.11
-sudo apt install --yes python$P_VERSION python$P_VERSION-dev python$P_VERSION-venv
+sudo apt upgrade --yes
+export P_VERSION=3.14
+uv self update
+uv python install $P_VERSION
 
-# 2
-/usr/bin/python$P_VERSION -m venv $HOME/.local/python-venv
-$HOME/.local/python-venv/bin/python$P_VERSION -m pip install -U setuptools wheel pip
-$HOME/.local/python-venv/bin/python$P_VERSION -m pip install termcolor black numpy build pytest pydub easydict
+cd $HOME
+if [ ! -e $HOME/.venv/ ]; then uv venv --seed --prompt home-py314 --python $P_VERSION; else echo ".venv/ already exists"; fi
+$HOME/.venv/bin/python$P_VERSION -m pip install -U setuptools>=80.0.0 wheel pip termcolor numpy build pytest ruff>=0.14.0 ipython
 
-# 3
-mkdir -p $HOME/.local/python-venv/pybin/ && cd $HOME/.local/python-venv/pybin/
-ln -s $HOME/.local/python-venv/bin/python$P_VERSION p
-
-# 4
-echo "----------"
-echo ">>> NOTE: Remember to add $HOME/.local/python-venv/pybin/ to your PATH env variable"
-echo ">>>   or use p -m dotsys --symlinks"
-echo "----------"
-
-# 5
 sudo apt install htop tree
 sudo apt install --yes bat # better cat
 sudo apt install --yes duf # better df -h

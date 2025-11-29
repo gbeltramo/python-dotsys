@@ -73,7 +73,7 @@ PS1='[\[\033[34m\]\u@$(hostname -i)\[\033[0m\]] \w \[\033[33m\]$(__git_ps1 " (%s
 
 # --- Append to PATH
 [[ ":$PATH:" != *":$HOME/bin:"* ]] && export PATH="$HOME/bin:${PATH}"
-[[ ":$PATH:" != *":$HOME/.local/python-venv/pybin:"* ]] && export PATH="$HOME/.local/python-venv/pybin:${PATH}"
+[[ ":$PATH:" != *":$HOME/.local/bin:"* ]] && export PATH="$HOME/.local/bin:${PATH}"
 [[ ":$PATH:" != *":$HOME/Lang/go/bin:"* ]] && export PATH="$HOME/Lang/go/bin:${PATH}"
 [[ ":$PATH:" != *":$HOME/Lang/zig/bin:"* ]] && export PATH="$HOME/Lang/zig/bin:${PATH}"
 
@@ -97,9 +97,11 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 
-# Temporary
-source $HOME/code/Kaggle/kaggle-czii-cryoet-2024/venv-cryoet/bin/activate
+# --- Python virtual environment
+source $HOME/.venv/bin/activate
 
+# --- Start a tmux session if not already active
 if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
     tmux attach -t base || tmux new -s base
 fi
+

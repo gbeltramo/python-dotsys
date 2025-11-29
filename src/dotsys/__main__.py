@@ -37,7 +37,9 @@ def main(args):
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Manage files in .dotfiles/")
-    parser.add_argument("-n", "--nuke", action="store_true", help="Delete of config files")
+    parser.add_argument(
+        "-n", "--nuke", action="store_true", help="Delete of config files"
+    )
     parser.add_argument("-s", "--symlinks", action="store_true", help="Create symlinks")
     args = parser.parse_args()
 

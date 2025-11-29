@@ -13,23 +13,21 @@ A Python package to manage config files and general system configuration.
   
 
 ## Prerequisites
-1. Install `python3`
-2. Create a virtual environmnet in `$HOME/.local` named `python-venv`
-3. Symlink `$HOME/.local/python-venv/bin/python3` to `$HOME/.local/python-venv/pybin/p`
-4. Make sure `$HOME/.local/python-venv/pybin/` is in your `$PATH` environment variable
+Make sure you have a Python virtual environment installed.
 
-For example, if you are using `bash` and the `apt` package manager, you can run the script `<PATH>/<TO>/python-dotsys/pre/setup.sh` and add
+See https://docs.astral.sh/uv/getting-started/installation/#standalone-installer
+
+You can run the script `<PATH>/<TO>/python-dotsys/pre/setup.sh` and add
 
 ``` bash
-# prepend to $PATH only if not already in
-[[ ":$PATH:" != *":$HOME/.local/python-venv/pybin/:"* ]] && PATH="$HOME/.local/python-venv/pybin/:${PATH}"
+source $HOME/.venv/bin/activate
 ```
 
 to your `$HOME/.bashrc` file.
 
 ## Installation
 Run the following commands to 
-1. install the `dotsys` package in the Python virtual environment described in the previous section 
+1. install the `dotsys` package in the Python virtual environment
 2. symlink `python-dotsys/dotfiles/` into `$HOME/.dotfiles/`.
 
 ``` bash
@@ -37,7 +35,7 @@ mkdir -p $HOME/code/repos/ && cd $HOME/code/repos/
 git clone git@github.com:gbeltramo/python-dotsys.git
 cd python-dotsys/
 bash pre/setup.sh
-export PATH="$HOME/.local/python-venv/pybin:${PATH}"
+# manually edit and source .bashrc
 make install-editable
 ```
 
