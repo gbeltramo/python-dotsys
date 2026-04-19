@@ -1,6 +1,6 @@
 font-family = JetBrainsMono Nerd Font
 font-size = 14
-theme = Novel
+theme = nordfox
 
 fullscreen = false
 
@@ -18,7 +18,7 @@ bold-is-bright = true
 mouse-hide-while-typing = true
 mouse-scroll-multiplier = 2
 copy-on-select = clipboard
-click-repeat-interval = 100
+click-repeat-interval = 50
 
 # keybindings
 keybind = ctrl+q>r=reload_config

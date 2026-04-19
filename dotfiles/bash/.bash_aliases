@@ -20,19 +20,12 @@ alias j="cd .."
 # open file
 alias o="open"
 
-# open Jupyer lab
-alias jup="jupyter lab --port 8899"
-
-# map Ctrl to All_Caps
-alias nocaps="setxkbmap -option ctrl:nocaps"
-
 # remove cached python files in project
 alias pyclean='find . | grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf'
 
 # quick editor
-alias e='emacs --no-window-system --quick --eval "(progn (global-display-line-numbers-mode t) (column-number-mode t) (load-theme '"'"'tango-dark) (ido-mode t) (fset '"'"'yes-or-no-p '"'"'y-or-n-p))"'
+alias e='emacs --no-window-system --quick --eval "(progn (global-display-line-numbers-mode t) (column-number-mode t) (load-theme '"'"'tango-dark) (ido-mode t) (fset '"'"'yes-or-no-p '"'"'y-or-n-p) (setq scroll-conservatively 101) (delete-selection-mode t) (setq echo-keystrokes 0.1) (setq require-final-newline t) (add-hook '"'"'before-save-hook '"'"'delete-trailing-whitespace))"'
 alias ee="emacs 1>&2 > /dev/null &"
-alias m="micro"
 
 # more processes info
 alias ps="ps fax"
@@ -47,6 +40,5 @@ alias kubectl="minikube kubectl --"
 # Note: need to "cd /usr/local/bin && ln -s /usr/bin/batcat bat"
 alias dog="bat --style=plain --pager=less --theme ansi"
 alias dog-full="bat --style=full --pager=less --theme ansi"
-
 # Temp fix for ghostty terminal
 alias btop="btop --utf-force"

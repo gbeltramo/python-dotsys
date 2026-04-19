@@ -39,21 +39,41 @@ use a hook to measure Emacs startup time."
 		       gcs-done)))
 #+end_src
 
+* Set PATH
+
+#+begin_src emacs-lisp :tangle yes
+  (defun gbel/set-exec-path-and-PATH ()
+    "Sync exec-path and PATH from a canonical list of directories."
+    (let ((path-dirs '("/home/gabri/bin"
+  		     "/home/gabri/.venv/bin"
+  		     "/home/gabri/.local/bin"
+  		     "/home/gabri/Lang/go/bin"
+  		     "/home/gabri/Lang/zig/bin")))
+      (setenv "PATH" (concat (string-join path-dirs ":") ":" (getenv "PATH")))
+      (setq exec-path (append path-dirs
+                              (seq-filter #'stringp exec-path)))
+    )
+  )
+  (gbel/set-exec-path-and-PATH)
+#+end_src
+
 * Basics
 ** User interface
 Make Emacs user interface more minimal.
 
 #+begin_src emacs-lisp :tangle yes
   ;; --- Basics ---
-  (setq inhibit-startup-screen t) ;; Do not show "Welcome" startup buffer
-  (menu-bar-mode -1)              ;; More vertical space
-  (tool-bar-mode -1)              ;; More vertical space
-  (scroll-bar-mode -1)            ;; Disable visible scrollbar
-  (tooltip-mode -1)               ;; Disable tooltips
-  (set-fringe-mode 10)            ;; Give some breathing room
-  (setq visible-bell t)           ;; Set up the visible bell
-  (xterm-mouse-mode t)            ;; Enable mouse use
-  (column-number-mode t)          ;; Show column number in status bar
+  (setq inhibit-startup-screen t)    ;; Do not show "Welcome" startup buffer
+  (menu-bar-mode -1)                 ;; More vertical space
+  (tool-bar-mode -1)                 ;; More vertical space
+  (scroll-bar-mode -1)               ;; Disable visible scrollbar
+  (tooltip-mode -1)                  ;; Disable tooltips
+  (set-fringe-mode 10)               ;; Give some breathing room
+  (setq visible-bell t)              ;; Set up the visible bell
+  (xterm-mouse-mode t)               ;; Enable mouse use
+  (column-number-mode t)             ;; Show column number in status bar
+  (add-to-list 'default-frame-alist '(undecorated . t)) ;; Remove title bar / window decorations
+  (setq scroll-conservatively 101)   ;; Scroll just enough text to bring point into view, even if you move far away
 #+end_src
 
 ** Font size
@@ -80,7 +100,6 @@ Column beyond which automatic line-wrapping should happen.
 #+end_src
 
 ** yes-no --> y-n
-
 Answer with just ~y~ or ~n~ instead of ~yes~ and ~no~.
 
 #+begin_src emacs-lisp :tangle yes
@@ -166,6 +185,12 @@ Better version of traditional ~list-buffers~ with ~C-x C-b~.
               (ibuffer-auto-mode 1)
               (ibuffer-switch-to-saved-filter-groups "default")))
   #+end_src
+
+** Auto revert mode
+
+#+begin_src emacs-lisp :tangle yes
+  (global-auto-revert-mode t)
+#+end_src
   
 * Dependencies
 
@@ -342,8 +367,8 @@ Link: https://github.com/minad/consult
    consult-theme :preview-key '(:debounce 0.2 any)
    consult-ripgrep consult-git-grep consult-grep
    consult-bookmark consult-recent-file consult-xref
-   consult--source-bookmark consult--source-file-register
-   consult--source-recent-file consult--source-project-recent-file
+   consult-source-bookmark consult-source-file-register
+   consult-source-recent-file consult-source-project-recent-file
    ;; :preview-key "M-."
    :preview-key '(:debounce 0.4 any))
 
@@ -727,10 +752,22 @@ Link: https://github.com/hcl-emacs/hcl-mode
   (add-to-list 'auto-mode-alist '("\\.hcl\\'" . hcl-mode))
 #+end_src
 
-** C
+** C and C++
+See https://olddeuteronomy.github.io/post/cpp-programming-in-emacs/
 
 #+begin_src emacs-lisp :tangle yes
-  (setq-default c-basic-offset 4)
+  ;; C and C++ modes
+  (add-hook 'c-mode-hook 'eglot-ensure)
+  (add-hook 'c++-mode-hook 'eglot-ensure)
+  (add-hook 'c-or-c++-mode-hook 'eglot-ensure)
+
+  (add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
+  (setq c-default-style "k&r")
+  (setq c-basic-indent 4)
+  (setq c-basic-offset 4)
+
+  ;; Spaces instead of tabs when indenting.
+  (setq-default indent-tabs-mode nil)
 #+end_src
 
 ** Kotlin

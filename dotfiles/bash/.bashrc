@@ -57,6 +57,13 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# --- LOCALE SETTINGS
+# May need to first run
+# $ sudo locale-gen en_GB.UTF-8 it_IT.UTF-8
+# $ sudo update-locale LANG=en_GB.UTF-8 LC_ALL=en_GB.UTF-8
+export LANG=en_GB.UTF-8
+export LC_ALL=en_GB.UTF-8
+
 # --- PROMPT
 # Next lines are for Git repo branch name in prompt
 source ~/.git-prompt.sh
@@ -69,7 +76,6 @@ GIT_PS1_SHOWDIRTYSTATE=t
 
 # - Uncomment next lines for Bash
 PS1='[\[\033[34m\]\u@$(hostname -i)\[\033[0m\]] \w \[\033[33m\]$(__git_ps1 " (%s)")\[\033[0m\] \$ '
-
 
 # --- Append to PATH
 [[ ":$PATH:" != *":$HOME/bin:"* ]] && export PATH="$HOME/bin:${PATH}"
@@ -104,4 +110,3 @@ source $HOME/.venv/bin/activate
 if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
     tmux attach -t base || tmux new -s base
 fi
-
