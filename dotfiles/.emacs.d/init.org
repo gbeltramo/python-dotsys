@@ -129,7 +129,7 @@ Emacs configuration options modified with ~M-x customize~ will *not* be saved
 in ~~/.emacs.d/init.el~. Instead, we use ~~/.emacs.d/local-init.el~.
 
 #+begin_src emacs-lisp :tangle yes
-  ;; Use separate file for interactive configuration 
+  ;; Use separate file for interactive configuration
   (setq custom-file "~/.emacs.d/local-init.el")
 
   (let ((local-init "~/.emacs.d/local-init.el"))
@@ -191,7 +191,7 @@ Better version of traditional ~list-buffers~ with ~C-x C-b~.
 #+begin_src emacs-lisp :tangle yes
   (global-auto-revert-mode t)
 #+end_src
-  
+
 * Dependencies
 
 ** dash
@@ -280,6 +280,8 @@ Link: https://github.com/minad/vertico
 
   ;; Persist history over Emacs restarts. Vertico sorts by history position.
   (savehist-mode t)
+
+  (add-to-list 'savehist-additional-variables 'extended-command-history)
 #+end_src
 
 ** orderless: match by regexp or other
@@ -288,7 +290,7 @@ into space-separated components, and matches candidates that match all of the
 components in any order. Each component can match in any one of several ways:
 literally, as a regexp, as an initialism, in the flex style, or as multiple
 word prefixes. By default, regexp and literal matches are enabled.
-	
+
 Link: https://github.com/oantolin/orderless
 
 #+begin_src emacs-lisp :tangle yes
@@ -402,7 +404,7 @@ Link: https://github.com/minad/consult
   (setq vertico-multiform-commands
 	'((consult-imenu buffer indexed)
 	  (consult-grep buffer indexed)
-	  (consult-git-grep buffer indexed)	  
+	  (consult-git-grep buffer indexed)
 	  (consult-ripgrep  buffer indexed)
 	  (consult-line buffer indexed)
 	  (execute-extended-command indexed)))
@@ -421,6 +423,23 @@ Link: https://github.com/abo-abo/ace-window
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   (custom-set-faces
    '(aw-leading-char-face ((t (:inherit ace-jump-face-foreground :height 2.0)))))
+#+end_src
+
+** Tree view
+A Emacs tree plugin like NerdTree for Vim.
+
+Need to install fonts from all-the-icons, which is special and requires
+moving ~.data/~ to ~.emacs.d/elisp/~
+
+Link: https://github.com/jaypei/emacs-neotree.git and https://github.com/domtronn/all-the-icons.el.git
+
+#+begin_src emacs-lisp :tangle yes 
+  ;; Tree view
+  ;; Note: need to run all-the-icons-install-fonts and then "$ fc-cache -f -v" in a shell
+  (require 'all-the-icons)
+  (require 'neotree)
+
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 #+end_src
 
 * Completion
@@ -479,8 +498,8 @@ Org mode settings.
     (visual-line-mode 1))
 
   ;; Always tangle after save in org mode
-  (add-hook 'org-mode-hook 
-            (lambda () 
+  (add-hook 'org-mode-hook
+            (lambda ()
               (add-hook 'after-save-hook 'org-babel-tangle nil 'make-it-local)))
   (add-hook 'org-mode-hook 'gbel/org-mode-setup)
 #+end_src
@@ -553,7 +572,7 @@ Configure major modes based on shebang line
 Inspiration from Mike Zamanski and r/emacs ~ncsuwolf~, see
 https://cestlaz.github.io/posts/better-comments/#.V2snrt9vH0o
 
-#+begin_src emacs-lisp :tangle yes 
+#+begin_src emacs-lisp :tangle yes
   ;; --- TODO and NOTE comments ---
   (defface font-lock-comment-note
     '((t (:underline t)))
@@ -586,7 +605,7 @@ Link: https://github.com/minad/tempel
   ;; --- tempel ---
 
   (require 'tempel)
-  
+
 
   ;; Setup tempel completion at point
   (defun tempel-setup-capf ()
@@ -879,6 +898,28 @@ Link: https://github.com/millejoh/emacs-ipython-notebook
                  '(zig-mode . ("~/Lang/zig/bin/zls"))))
 #+end_src
 
+* TRAMP
+Transparent Remote Access, Multiple Protocols
+
+Also add ~ControlMaster~ to your ~.ssh/config~
+
+#+begin_src emacs-lisp :tangle yes
+  ;; TRAMP configuration
+  (setq tramp-persistency-file-name "~/.emacs.d/tramp")
+  (setq remote-file-name-inhibit-cache nil)
+  (setq vc-ignore-dir-regexp
+        (format "%s\\|%s" vc-ignore-dir-regexp tramp-file-name-regexp))
+#+end_src
+
+#+begin_src text
+  Host myserver
+        HostName myserver.example.com
+        User myuser
+        ControlMaster auto
+        ControlPath ~/.ssh/cm-%r@%h:%p
+        ControlPersist 10m
+#+end_src
+
 * My Macros
 Macros are a way of recording a sequence of consecutive key-presses and
 making it into a Lisp command.
@@ -1054,7 +1095,7 @@ Projects related functions
   ;; --- Emacs IPython Notebook package ---
   (defun gbel/require-ein ()
     (interactive)
-  
+
     (require 'ein)
     (require 'ein-notebook)
     (require 'ob-ein)
@@ -1063,7 +1104,7 @@ Projects related functions
     (setq org-babel-load-languages '((ein . t) (emacs-lisp . t)))
 
     ;; configure C-c C-c to avoid asking y/n when executing a code
-    ;; block in org-mode 
+    ;; block in org-mode
     (setq org-confirm-babel-evaluate nil))
 #+end_src
 
@@ -1138,7 +1179,7 @@ Move, search, and jump in buffers/files.
     (push `(lambda () ,expr) hydra-stack))
 
   (defun hydra-pop ()
-    (interactive)    
+    (interactive)
     (let ((x (pop hydra-stack)))
       (when x
         (funcall x))))
@@ -1184,7 +1225,7 @@ Move, search, and jump in buffers/files.
     "org-mode hydra"
     ;; movement
     ("-" org-backward-sentence "-1 sentence")
-    ("=" org-forward-sentence "+1 sentence")  
+    ("=" org-forward-sentence "+1 sentence")
     ("i" org-backward-element "-1 heading")
     ("k" org-forward-element "+1 heading")
     ("j" org-up-element "Go to parent heading")
@@ -1220,7 +1261,7 @@ Coding related commands under ~M-c ...~.
     ;; testing
     ;; use M-t to run tests of subunit
     ("s" gbel/project-set-test-subunit "Set test subunit")
-    ("t" gbel/project-test "Test all")  
+    ("t" gbel/project-test "Test all")
     ("e" eldoc "Eldoc"))
   (global-set-key (kbd "M-c") 'hydra-code/body)
 #+end_src
@@ -1328,6 +1369,8 @@ Globally set keys
   ;; --- globally set keys ---
   (global-set-key (kbd "M-i") 'completion-at-point)
   (global-set-key (kbd "<f5>") 'revert-buffer)
+  (global-set-key (kbd "<f9>") 'neotree-toggle)
+  (global-set-key (kbd "<f10>") 'project-query-replace-regexp)
   (global-set-key (kbd "M-e") 'flycheck-first-error)
   (global-set-key (kbd "M-t") 'gbel/project-test-subunit)
   (global-set-key (kbd "C-x o") 'ace-window)
@@ -1346,5 +1389,4 @@ Globally set keys
           (replace-match "")))))
   (global-set-key (kbd "<backtab>") 'un-indent-by-removing-4-spaces)
 #+end_src
-
 

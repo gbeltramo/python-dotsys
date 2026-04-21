@@ -81,6 +81,8 @@ emacs_pkgs = (
     ("https://github.com/yoshiki/yaml-mode.git", "yaml-mode"),
     ("https://github.com/purcell/emacs-reformatter", "reformatter"),  # Zig dep
     ("https://codeberg.org/ziglang/zig-mode.git", "zig-mode"),
+    ("https://github.com/domtronn/all-the-icons.el.git", "all-the-icons"),
+    ("https://github.com/jaypei/emacs-neotree.git", "neotree"),
 )
 
 
