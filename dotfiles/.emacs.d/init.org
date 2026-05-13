@@ -39,24 +39,6 @@ use a hook to measure Emacs startup time."
 		       gcs-done)))
 #+end_src
 
-* Set PATH
-
-#+begin_src emacs-lisp :tangle yes
-  (defun gbel/set-exec-path-and-PATH ()
-    "Sync exec-path and PATH from a canonical list of directories."
-    (let ((path-dirs '("/home/gabri/bin"
-  		     "/home/gabri/.venv/bin"
-  		     "/home/gabri/.local/bin"
-  		     "/home/gabri/Lang/go/bin"
-  		     "/home/gabri/Lang/zig/bin")))
-      (setenv "PATH" (concat (string-join path-dirs ":") ":" (getenv "PATH")))
-      (setq exec-path (append path-dirs
-                              (seq-filter #'stringp exec-path)))
-    )
-  )
-  (gbel/set-exec-path-and-PATH)
-#+end_src
-
 * Basics
 ** User interface
 Make Emacs user interface more minimal.
@@ -72,15 +54,18 @@ Make Emacs user interface more minimal.
   (setq visible-bell t)              ;; Set up the visible bell
   (xterm-mouse-mode t)               ;; Enable mouse use
   (column-number-mode t)             ;; Show column number in status bar
-  (add-to-list 'default-frame-alist '(undecorated . t)) ;; Remove title bar / window decorations
+  ;; (add-to-list 'default-frame-alist '(undecorated . t)) ;; Remove title bar / window decorations
   (setq scroll-conservatively 101)   ;; Scroll just enough text to bring point into view, even if you move far away
 #+end_src
 
-** Font size
+** Fonts
 
 #+begin_src emacs-lisp :tangle yes
-  ;; font size
-  (set-face-attribute 'default nil :height 115)
+  ;; Set fonts
+  (set-face-attribute 'default nil
+                      :family "JetBrainsMono Nerd Font"
+                      :height 150
+                      :weight 'regular)
 #+end_src
 
 ** Minibuffer within minibuffer
@@ -842,7 +827,10 @@ Configure ~python-mode~ for ~.py~ files with
   ;;;###autoload (autoload 'ruff-format-on-save-mode "ruff-format" nil t)
   (reformatter-define ruff-format
     :program ruff-format-command
-    :args (list "format" "--stdin-filename" (or (buffer-file-name) input-file))
+    :args (let ((cfg (locate-dominating-file (or (buffer-file-name) default-directory) "ruff.toml")))
+          (append
+            (when cfg (list "--config" cfg))
+            (list "format" "--stdin-filename" (or (buffer-file-name) input-file))))
     :lighter " RuffFmt"
     :group 'ruff-format)
 
@@ -854,7 +842,7 @@ Configure ~python-mode~ for ~.py~ files with
 
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
-                 '(python-base-mode . ("/home/gabri/.venv/bin/ruff" "server"))))
+                 '(python-base-mode . ("ty" "server"))))
 
   (add-hook 'python-base-mode-hook
             (lambda ()
@@ -1371,6 +1359,7 @@ Globally set keys
   (global-set-key (kbd "<f5>") 'revert-buffer)
   (global-set-key (kbd "<f9>") 'neotree-toggle)
   (global-set-key (kbd "<f10>") 'project-query-replace-regexp)
+  (global-set-key (kbd "<f12>") 'eglot-format)
   (global-set-key (kbd "M-e") 'flycheck-first-error)
   (global-set-key (kbd "M-t") 'gbel/project-test-subunit)
   (global-set-key (kbd "C-x o") 'ace-window)
