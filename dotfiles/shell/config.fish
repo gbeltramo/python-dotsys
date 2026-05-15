@@ -1,5 +1,19 @@
-if status is-interactive
-    # Commands to run in interactive sessions can go here
+fish_add_path $HOME/Lang/flutter/bin
+fish_add_path $HOME/Lang/zig/bin
+fish_add_path $HOME/Lang/android-studio/bin
+
+set --export --global TERM xterm
+
+function ls
+    command ls --color=auto $argv
+end
+
+function la
+    command ls -A --color=auto $argv
+end
+
+function ll
+    command ls -lah --color=auto $argv
 end
 
 function j
@@ -11,9 +25,13 @@ function e
 end
 
 function dog
-    bat --paging="always" --pager="less -R" --style="header" --wrap="never" --theme="Monokai Extended Bright" $argv
+    batcat --paging="always" --pager="less -R" --style="header" --wrap="never" --theme="Monokai Extended Bright" $argv
 end
 
 function dog-full
-    bat --paging="always" --pager="less -R" --style="full" --wrap="never" --theme="Monokai Extended Bright" $argv
+    batcat --paging="always" --pager="less -R" --style="full" --wrap="never" --theme="Monokai Extended Bright" $argv
+end
+
+if test -f ~/.venv/bin/activate.fish
+    source ~/.venv/bin/activate.fish
 end

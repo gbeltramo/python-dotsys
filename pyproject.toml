@@ -1,18 +1,49 @@
+[build-system]
+requires = ["setuptools>=82.0.0"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "dotsys"
 version = "0.2.0"
 authors = [{ name = "Gabriele Beltramo", email = "hello@gbeltramo.com" }]
 description = "A Python package to manage config files and general system configuration."
 readme = "README.md"
-requires-python = ">=3.12,<3.15"
+requires-python = ">=3.13,<3.15"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
 ]
 
-[build-system]
-requires = ["setuptools>=80.0.0"]
-build-backend = "setuptools.build_meta"
+dependencies = [
+    "build",
+    "termcolor",
+    "cython",
+    "numba",
+    "pybind11",
+    "numpy>=2.0",
+    "scipy",
+    "polars",
+    "torch>=2.12",
+    "nvidia-cuda-runtime>=13.0.0",
+    "triton>=3.7.0",
+    "helion",
+    "transformers>=5.8.0",
+    "datasets",
+    "evaluate>=0.4.6",
+    "lighteval",
+    "accelerate",
+    "peft",
+    "smolagents",
+    "sglang>=0.5.0",
+    "langchain>=1.3.0",
+    "langgraph",
+    "matplotlib",
+    "ipython",
+    "jupyterlab",
+    "pytest",
+    "ruff",
+    "ty",
+]
 
 [tool.bumpver]
 current_version = "0.2.0"

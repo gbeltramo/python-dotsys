@@ -1,0 +1,5 @@
+export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/Lang/zig/bin:$PATH"
+export PATH="$HOME/Lang/flutter/bin:$PATH"
+export PATH="$HOME/Lang/android-studio/bin:$PATH"
