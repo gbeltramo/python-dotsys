@@ -1,40 +1,60 @@
 {
-    "workbench.startupEditor": "none",
     "workbench.colorTheme": "Zenburn",
+
     "editor.fontSize": 16,
-    "files.trimTrailingWhitespace": true,
-    "[python]": {
-        "editor.formatOnType": true,
-        "editor.codeActionsOnSave": {
-            "source.organizeImports": true
-        },
-    },
     "editor.formatOnSave": true,
-    "python.formatting.blackPath": "/home/gabri/mambaforge/envs/test/bin/black",
-    "python.formatting.provider": "black",
-    "python.formatting.blackArgs": [
-        "--line-length",
-        "100",
-        "--target-version",
-        "py311"
-    ],
-    "isort.path": [
-        "/home/gabri/mambaforge/envs/test/bin/isort"
-    ],
-    "isort.args": [
-        "--line-length",
-        "100",
-        "--py",
-        "311",
-        "--force-alphabetical-sort",
-        "--profile",
-        "black",
-        "--atomic",
-        "--lines-after-imports",
-        "-1 ",
-        "--lines-between-types",
-        "1 ",
-    ],
-    "window.zoomLevel": 1,
+
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit",
+        "source.fixAll": "explicit"
+    },
+
+    "editor.minimap.enabled": true,
+
+    "editor.rulers": [100],
+
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/__pycache__": true,
+        "**/.pytest_cache": true,
+        "**/.mypy_cache": true
+    },
+
+    "search.exclude": {
+        "**/.venv": true,
+        "**/node_modules": true,
+        "**/build": true
+    },
+
+    "terminal.integrated.defaultProfile.linux": "fish",
+
+    "python.defaultInterpreterPath": ".venv/bin/python",
+
+    "python.analysis.typeCheckingMode": "basic",
+
+    "python.testing.pytestEnabled": true,
+
+    "python.testing.unittestEnabled": false,
+
+    "python.analysis.autoImportCompletions": true,
+
+    "python.terminal.activateEnvironment": true,
+
+    "dart.flutterSdkPath": "/home/gabri/Lang/flutter",
+
+    "dart.previewFlutterUiGuides": true,
+
+    "dart.lineLength": 100,
+
+    "explorer.confirmDelete": false,
+
+    "git.autofetch": true,
+
+    "git.confirmSync": false
+
     "excalidraw.theme": "light",
 }

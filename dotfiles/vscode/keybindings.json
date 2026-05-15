@@ -1,0 +1,15 @@
+[
+    {
+        "key": "alt+.",
+        "command": "editor.action.revealDefinition",
+        "when": "editorHasDefinitionProvider && editorTextFocus && !isInEmbeddedEditor"
+    },
+    {
+        "key": "alt+,",
+        "command": "workbench.action.navigateBack"
+    }
+    {
+	"key": "alt+shift+,",
+	"command": "workbench.action.navigateForward"
+    }
+]
