@@ -9,39 +9,43 @@ accelerate==1.13.0
     #   peft
 aenum==3.1.15
     # via lighteval
-aioboto3==15.5.0
-    # via inspect-ai
-aiobotocore==2.25.1
-    # via
-    #   aioboto3
-    #   s3fs
-aiofiles==25.1.0
-    # via aioboto3
+ag-ui-protocol==0.1.18
+    # via pydantic-ai-slim
+aiofile==3.9.0
+    # via py-key-value-aio
 aiohappyeyeballs==2.6.1
     # via aiohttp
 aiohttp==3.13.5
     # via
-    #   aiobotocore
     #   fsspec
-    #   inspect-ai
-    #   s3fs
     #   sglang
-aioitertools==0.13.0
-    # via aiobotocore
+    #   xai-sdk
 aiosignal==1.4.0
     # via aiohttp
 annotated-doc==0.0.4
     # via typer
 annotated-types==0.7.0
     # via pydantic
+anthropic==0.102.0
+    # via pydantic-ai-slim
 antlr4-python3-runtime==4.13.2
     # via latex2sympy2-extended
 anyio==4.13.0
     # via
+    #   anthropic
+    #   google-genai
+    #   groq
     #   httpx
-    #   inspect-ai
     #   jupyter-server
+    #   mcp
     #   openai
+    #   py-key-value-aio
+    #   pydantic-evals
+    #   sse-starlette
+    #   starlette
+    #   watchfiles
+argcomplete==3.6.3
+    # via pydantic-ai-slim
 argon2-cffi==25.1.0
     # via jupyter-server
 argon2-cffi-bindings==25.1.0
@@ -55,44 +59,51 @@ async-lru==2.3.0
 attrs==26.1.0
     # via
     #   aiohttp
-    #   jsonlines
+    #   cyclopts
     #   jsonschema
     #   referencing
+authlib==1.7.2
+    # via fastmcp-slim
 babel==2.18.0
     # via jupyterlab-server
+beartype==0.22.9
+    # via py-key-value-aio
 beautifulsoup4==4.14.3
-    # via
-    #   inspect-ai
-    #   nbconvert
+    # via nbconvert
 bleach==6.3.0
     # via nbconvert
-boto3==1.40.61
+boto3==1.43.8
+    # via pydantic-ai-slim
+botocore==1.43.8
     # via
-    #   aiobotocore
-    #   inspect-ai
-botocore==1.40.61
-    # via
-    #   aiobotocore
     #   boto3
     #   s3transfer
 build==1.5.0
     # via dotsys (pyproject.toml)
+cachetools==7.1.1
+    # via py-key-value-aio
+caio==0.9.25
+    # via aiofile
 certifi==2026.4.22
     # via
     #   httpcore
     #   httpx
     #   requests
 cffi==2.0.0
-    # via argon2-cffi-bindings
+    # via
+    #   argon2-cffi-bindings
+    #   cryptography
 chardet==6.0.0.post1
     # via mbstrdecoder
 charset-normalizer==3.4.7
     # via requests
 click==8.2.1
     # via
-    #   inspect-ai
     #   nltk
     #   typer
+    #   uvicorn
+cohere==5.21.1
+    # via pydantic-ai-slim
 colorama==0.4.6
     # via sacrebleu
 colorlog==6.10.1
@@ -101,6 +112,13 @@ comm==0.2.3
     # via ipykernel
 contourpy==1.3.3
     # via matplotlib
+cryptography==48.0.0
+    # via
+    #   authlib
+    #   google-auth
+    #   joserfc
+    #   pyjwt
+    #   secretstorage
 cuda-bindings==13.2.0
     # via torch
 cuda-pathfinder==1.5.4
@@ -109,6 +127,8 @@ cuda-toolkit==13.0.2
     # via torch
 cycler==0.12.1
     # via matplotlib
+cyclopts==4.12.0
+    # via fastmcp-slim
 cython==3.2.4
     # via dotsys (pyproject.toml)
 dataproperty==1.1.1
@@ -121,9 +141,7 @@ datasets==4.8.5
     #   evaluate
     #   lighteval
 debugpy==1.8.20
-    # via
-    #   inspect-ai
-    #   ipykernel
+    # via ipykernel
 decorator==5.2.1
     # via ipython
 defusedxml==0.7.1
@@ -134,15 +152,39 @@ dill==0.4.1
     #   evaluate
     #   multiprocess
 distro==1.9.0
-    # via openai
+    # via
+    #   anthropic
+    #   google-genai
+    #   groq
+    #   openai
+dnspython==2.8.0
+    # via email-validator
 docstring-parser==0.18.0
-    # via inspect-ai
+    # via
+    #   anthropic
+    #   cyclopts
+docutils==0.22.4
+    # via rich-rst
+email-validator==2.3.0
+    # via pydantic
+eval-type-backport==0.3.1
+    # via mistralai
 evaluate==0.4.6
     # via dotsys (pyproject.toml)
+exceptiongroup==1.3.1
+    # via fastmcp-slim
 executing==2.2.1
-    # via stack-data
+    # via
+    #   logfire
+    #   stack-data
+fastavro==1.12.2
+    # via cohere
 fastjsonschema==2.21.2
     # via nbformat
+fastmcp==3.3.0
+    # via pydantic-ai-slim
+fastmcp-slim==3.3.0
+    # via fastmcp
 filecheck==1.0.3
     # via helion
 filelock==3.29.0
@@ -163,17 +205,36 @@ fsspec==2025.9.0
     #   datasets
     #   evaluate
     #   huggingface-hub
-    #   inspect-ai
     #   lighteval
-    #   s3fs
     #   torch
-    #   universal-pathlib
+genai-prices==0.0.59
+    # via pydantic-ai-slim
 gitdb==4.0.12
     # via gitpython
 gitpython==3.1.50
     # via lighteval
+google-auth==2.52.0
+    # via
+    #   google-genai
+    #   pydantic-ai-slim
+google-genai==2.3.0
+    # via pydantic-ai-slim
+googleapis-common-protos==1.75.0
+    # via
+    #   opentelemetry-exporter-otlp-proto-http
+    #   xai-sdk
+griffelib==2.0.2
+    # via
+    #   fastmcp-slim
+    #   pydantic-ai-slim
+groq==1.2.0
+    # via pydantic-ai-slim
+grpcio==1.80.0
+    # via xai-sdk
 h11==0.16.0
-    # via httpcore
+    # via
+    #   httpcore
+    #   uvicorn
 helion==1.0.0
     # via dotsys (pyproject.toml)
 hf-xet==1.5.0
@@ -184,14 +245,25 @@ httpcore==1.0.9
     # via httpx
 httpx==0.28.1
     # via
+    #   anthropic
+    #   cohere
     #   datasets
+    #   fastmcp-slim
+    #   genai-prices
+    #   google-genai
+    #   groq
     #   huggingface-hub
-    #   inspect-ai
     #   jupyterlab
     #   langgraph-sdk
     #   langsmith
     #   lighteval
+    #   mcp
+    #   mistralai
     #   openai
+    #   pydantic-ai-slim
+    #   pydantic-graph
+httpx-sse==0.4.3
+    # via mcp
 huggingface-hub==1.14.0
     # via
     #   accelerate
@@ -199,22 +271,22 @@ huggingface-hub==1.14.0
     #   evaluate
     #   lighteval
     #   peft
+    #   pydantic-ai-slim
     #   smolagents
     #   tokenizers
     #   transformers
 idna==3.15
     # via
     #   anyio
+    #   email-validator
     #   httpx
     #   jsonschema
     #   requests
     #   yarl
-ijson==3.5.0
-    # via inspect-ai
+importlib-metadata==8.7.1
+    # via opentelemetry-api
 iniconfig==2.3.0
     # via pytest
-inspect-ai==0.3.220
-    # via lighteval
 ipykernel==7.2.0
     # via jupyterlab
 ipython==9.13.0
@@ -226,8 +298,18 @@ ipython-pygments-lexers==1.1.1
     # via ipython
 isoduration==20.11.0
     # via jsonschema
+jaraco-classes==3.4.0
+    # via keyring
+jaraco-context==6.1.2
+    # via keyring
+jaraco-functools==4.4.0
+    # via keyring
 jedi==0.20.0
     # via ipython
+jeepney==0.9.0
+    # via
+    #   keyring
+    #   secretstorage
 jinja2==3.1.6
     # via
     #   jupyter-server
@@ -237,38 +319,39 @@ jinja2==3.1.6
     #   smolagents
     #   torch
 jiter==0.14.0
-    # via openai
+    # via
+    #   anthropic
+    #   openai
 jmespath==1.1.0
     # via
-    #   aiobotocore
     #   boto3
     #   botocore
 joblib==1.5.3
     # via
     #   nltk
     #   scikit-learn
+joserfc==1.6.5
+    # via authlib
 json5==0.14.0
     # via jupyterlab-server
-jsonlines==4.0.0
-    # via inspect-ai
 jsonpatch==1.33
-    # via
-    #   inspect-ai
-    #   langchain-core
-jsonpath-ng==1.8.0
-    # via inspect-ai
+    # via langchain-core
+jsonpath-python==1.1.6
+    # via mistralai
 jsonpointer==3.1.1
     # via
     #   jsonpatch
     #   jsonschema
 jsonref==1.1.0
-    # via inspect-ai
+    # via fastmcp-slim
 jsonschema==4.26.0
     # via
-    #   inspect-ai
     #   jupyter-events
     #   jupyterlab-server
+    #   mcp
     #   nbformat
+jsonschema-path==0.4.6
+    # via fastmcp-slim
 jsonschema-specifications==2025.9.1
     # via jsonschema
 jupyter-client==8.8.0
@@ -303,6 +386,8 @@ jupyterlab-pygments==0.3.0
     # via nbconvert
 jupyterlab-server==2.28.0
     # via jupyterlab
+keyring==25.7.0
+    # via py-key-value-aio
 kiwisolver==1.5.0
     # via matplotlib
 langchain==1.3.0
@@ -335,19 +420,20 @@ lark==1.3.1
     # via rfc3987-syntax
 latex2sympy2-extended==1.0.6
     # via lighteval
-lighteval==0.13.0
+lighteval==0.11.0
     # via dotsys (pyproject.toml)
-linkify-it-py==2.1.0
-    # via markdown-it-py
 llvmlite==0.47.0
     # via numba
+logfire==4.33.0
+    # via pydantic-ai-slim
+logfire-api==4.33.0
+    # via
+    #   pydantic-evals
+    #   pydantic-graph
 lxml==6.1.0
     # via sacrebleu
 markdown-it-py==4.2.0
-    # via
-    #   mdit-py-plugins
-    #   rich
-    #   textual
+    # via rich
 markupsafe==3.0.3
     # via
     #   jinja2
@@ -363,19 +449,24 @@ mbstrdecoder==1.1.5
     #   dataproperty
     #   pytablewriter
     #   typepy
-mdit-py-plugins==0.6.1
-    # via textual
+mcp==1.27.1
+    # via
+    #   fastmcp-slim
+    #   pydantic-ai-slim
 mdurl==0.1.2
     # via markdown-it-py
+mistralai==2.4.5
+    # via pydantic-ai-slim
 mistune==3.2.1
     # via nbconvert
-mmh3==5.2.1
-    # via inspect-ai
+more-itertools==11.0.2
+    # via
+    #   jaraco-classes
+    #   jaraco-functools
 mpmath==1.3.0
     # via sympy
 multidict==6.7.1
     # via
-    #   aiobotocore
     #   aiohttp
     #   yarl
 multiprocess==0.70.19
@@ -393,10 +484,10 @@ nbformat==5.10.4
     #   nbconvert
 nest-asyncio==1.6.0
     # via ipykernel
-nest-asyncio2==1.7.2
-    # via inspect-ai
 networkx==3.6.1
     # via torch
+nexus-rpc==1.4.0
+    # via temporalio
 nltk==3.9.1
     # via
     #   lighteval
@@ -413,7 +504,6 @@ numpy==2.4.4
     #   datasets
     #   evaluate
     #   helion
-    #   inspect-ai
     #   lighteval
     #   matplotlib
     #   numba
@@ -469,19 +559,59 @@ nvidia-nvshmem-cu13==3.4.5
 nvidia-nvtx==13.0.85
     # via cuda-toolkit
 openai==2.36.0
-    # via lighteval
+    # via pydantic-ai-slim
+openapi-pydantic==0.5.1
+    # via fastmcp-slim
+opentelemetry-api==1.39.1
+    # via
+    #   fastmcp-slim
+    #   mistralai
+    #   opentelemetry-exporter-otlp-proto-http
+    #   opentelemetry-instrumentation
+    #   opentelemetry-instrumentation-httpx
+    #   opentelemetry-sdk
+    #   opentelemetry-semantic-conventions
+    #   pydantic-ai-slim
+opentelemetry-exporter-otlp-proto-common==1.39.1
+    # via opentelemetry-exporter-otlp-proto-http
+opentelemetry-exporter-otlp-proto-http==1.39.1
+    # via logfire
+opentelemetry-instrumentation==0.60b1
+    # via
+    #   logfire
+    #   opentelemetry-instrumentation-httpx
+opentelemetry-instrumentation-httpx==0.60b1
+    # via logfire
+opentelemetry-proto==1.39.1
+    # via
+    #   opentelemetry-exporter-otlp-proto-common
+    #   opentelemetry-exporter-otlp-proto-http
+opentelemetry-sdk==1.39.1
+    # via
+    #   logfire
+    #   opentelemetry-exporter-otlp-proto-http
+    #   xai-sdk
+opentelemetry-semantic-conventions==0.60b1
+    # via
+    #   mistralai
+    #   opentelemetry-instrumentation
+    #   opentelemetry-instrumentation-httpx
+    #   opentelemetry-sdk
+opentelemetry-util-http==0.60b1
+    # via opentelemetry-instrumentation-httpx
 orjson==3.11.9
     # via
     #   langgraph-sdk
     #   langsmith
 ormsgpack==1.12.2
     # via langgraph-checkpoint
-packaging==26.2
+packaging==25.0
     # via
     #   accelerate
     #   build
     #   datasets
     #   evaluate
+    #   fastmcp-slim
     #   huggingface-hub
     #   ipykernel
     #   jupyter-events
@@ -492,10 +622,12 @@ packaging==26.2
     #   langsmith
     #   matplotlib
     #   nbconvert
+    #   opentelemetry-instrumentation
     #   peft
     #   pytest
     #   transformers
     #   typepy
+    #   xai-sdk
 pandas==3.0.3
     # via
     #   datasets
@@ -504,8 +636,8 @@ pandocfilters==1.5.1
     # via nbconvert
 parso==0.8.7
     # via jedi
-pathlib-abc==0.5.2
-    # via universal-pathlib
+pathable==0.5.0
+    # via jsonschema-path
 pathvalidate==3.3.1
     # via pytablewriter
 peft==0.19.1
@@ -518,9 +650,8 @@ pillow==12.2.0
     #   smolagents
 platformdirs==4.9.6
     # via
-    #   inspect-ai
+    #   fastmcp-slim
     #   jupyter-core
-    #   textual
 pluggy==1.6.0
     # via pytest
 polars==1.40.1
@@ -532,18 +663,25 @@ portalocker==3.2.0
 prometheus-client==0.25.0
     # via jupyter-server
 prompt-toolkit==3.0.52
-    # via ipython
+    # via
+    #   ipython
+    #   pydantic-ai-slim
 propcache==0.5.2
     # via
     #   aiohttp
     #   yarl
-protobuf==7.34.1
-    # via lighteval
+protobuf==6.33.6
+    # via
+    #   googleapis-common-protos
+    #   lighteval
+    #   logfire
+    #   opentelemetry-proto
+    #   temporalio
+    #   xai-sdk
 psutil==7.2.2
     # via
     #   accelerate
     #   helion
-    #   inspect-ai
     #   ipykernel
     #   ipython
     #   peft
@@ -553,8 +691,14 @@ ptyprocess==0.7.0
     #   terminado
 pure-eval==0.2.3
     # via stack-data
+py-key-value-aio==0.4.4
+    # via fastmcp-slim
 pyarrow==24.0.0
     # via datasets
+pyasn1==0.6.3
+    # via pyasn1-modules
+pyasn1-modules==0.4.2
+    # via google-auth
 pybind11==3.0.4
     # via dotsys (pyproject.toml)
 pycountry==26.2.16
@@ -563,15 +707,48 @@ pycparser==3.0
     # via cffi
 pydantic==2.13.4
     # via
-    #   inspect-ai
+    #   ag-ui-protocol
+    #   anthropic
+    #   cohere
+    #   fastmcp-slim
+    #   genai-prices
+    #   google-genai
+    #   groq
     #   langchain
     #   langchain-core
     #   langgraph
     #   langsmith
     #   lighteval
+    #   mcp
+    #   mistralai
     #   openai
+    #   openapi-pydantic
+    #   pydantic-ai-slim
+    #   pydantic-evals
+    #   pydantic-graph
+    #   pydantic-handlebars
+    #   pydantic-settings
+    #   xai-sdk
+pydantic-ai==1.96.1
+    # via dotsys (pyproject.toml)
+pydantic-ai-slim==1.96.1
+    # via
+    #   pydantic-ai
+    #   pydantic-evals
 pydantic-core==2.46.4
-    # via pydantic
+    # via
+    #   cohere
+    #   pydantic
+pydantic-evals==1.96.1
+    # via pydantic-ai-slim
+pydantic-graph==1.96.1
+    # via pydantic-ai-slim
+pydantic-handlebars==0.1.0
+    # via pydantic-ai-slim
+pydantic-settings==2.14.1
+    # via
+    #   fastmcp-slim
+    #   mcp
 pygments==2.20.0
     # via
     #   ipython
@@ -579,9 +756,14 @@ pygments==2.20.0
     #   nbconvert
     #   pytest
     #   rich
-    #   textual
+pyjwt==2.12.1
+    # via mcp
 pyparsing==3.3.2
     # via matplotlib
+pyperclip==1.11.0
+    # via
+    #   fastmcp-slim
+    #   pydantic-ai-slim
 pyproject-hooks==1.2.0
     # via build
 pytablewriter==1.2.1
@@ -590,30 +772,38 @@ pytest==9.0.3
     # via dotsys (pyproject.toml)
 python-dateutil==2.9.0.post0
     # via
-    #   aiobotocore
     #   arrow
     #   botocore
     #   jupyter-client
     #   matplotlib
+    #   mistralai
     #   pandas
     #   typepy
 python-dotenv==1.2.2
     # via
-    #   inspect-ai
+    #   fastmcp-slim
+    #   pydantic-settings
     #   smolagents
 python-json-logger==4.1.0
     # via jupyter-events
+python-multipart==0.0.28
+    # via
+    #   fastmcp-slim
+    #   mcp
 pytz==2026.2
     # via typepy
 pyyaml==6.0.3
     # via
     #   accelerate
     #   datasets
+    #   fastmcp-slim
     #   huggingface-hub
-    #   inspect-ai
+    #   jsonschema-path
     #   jupyter-events
     #   langchain-core
     #   peft
+    #   pydantic-ai-slim
+    #   pydantic-evals
     #   transformers
 pyzmq==27.1.0
     # via
@@ -623,6 +813,7 @@ pyzmq==27.1.0
 referencing==0.37.0
     # via
     #   jsonschema
+    #   jsonschema-path
     #   jsonschema-specifications
     #   jupyter-events
 regex==2026.5.9
@@ -633,14 +824,20 @@ regex==2026.5.9
     #   transformers
 requests==2.34.2
     # via
+    #   cohere
     #   datasets
     #   evaluate
+    #   google-auth
+    #   google-genai
     #   jupyterlab-server
     #   langsmith
+    #   opentelemetry-exporter-otlp-proto-http
+    #   pydantic-ai-slim
     #   requests-toolbelt
     #   sglang
     #   smolagents
     #   tiktoken
+    #   xai-sdk
 requests-toolbelt==1.0.0
     # via langsmith
 rfc3339-validator==0.1.4
@@ -655,12 +852,18 @@ rfc3987-syntax==1.1.0
     # via jsonschema
 rich==15.0.0
     # via
+    #   cyclopts
+    #   fastmcp-slim
     #   helion
-    #   inspect-ai
     #   lighteval
+    #   logfire
+    #   pydantic-ai-slim
+    #   pydantic-evals
+    #   rich-rst
     #   smolagents
-    #   textual
     #   typer
+rich-rst==1.3.2
+    # via cyclopts
 rouge-score==0.1.2
     # via lighteval
 rpds-py==0.30.0
@@ -669,9 +872,7 @@ rpds-py==0.30.0
     #   referencing
 ruff==0.15.13
     # via dotsys (pyproject.toml)
-s3fs==2025.9.0
-    # via inspect-ai
-s3transfer==0.14.0
+s3transfer==0.17.0
     # via boto3
 sacrebleu==2.6.0
     # via lighteval
@@ -688,8 +889,8 @@ scipy==1.17.1
     # via
     #   dotsys (pyproject.toml)
     #   scikit-learn
-semver==3.0.4
-    # via inspect-ai
+secretstorage==3.5.0
+    # via keyring
 send2trash==2.1.0
     # via jupyter-server
 sentencepiece==0.2.1
@@ -705,8 +906,6 @@ sglang==0.5.2
     # via dotsys (pyproject.toml)
 shellingham==1.5.4
     # via typer
-shortuuid==1.0.13
-    # via inspect-ai
 six==1.17.0
     # via
     #   python-dateutil
@@ -718,12 +917,21 @@ smolagents==1.25.0
     # via dotsys (pyproject.toml)
 sniffio==1.3.1
     # via
-    #   inspect-ai
+    #   anthropic
+    #   google-genai
+    #   groq
     #   openai
 soupsieve==2.8.3
     # via beautifulsoup4
+sse-starlette==3.4.4
+    # via mcp
 stack-data==0.6.3
     # via ipython
+starlette==1.0.0
+    # via
+    #   mcp
+    #   pydantic-ai-slim
+    #   sse-starlette
 sympy==1.14.0
     # via
     #   latex2sympy2-extended
@@ -734,10 +942,13 @@ tabulate==0.10.0
     # via sacrebleu
 tcolorpy==0.1.7
     # via pytablewriter
+temporalio==1.27.2
+    # via pydantic-ai-slim
 tenacity==9.1.4
     # via
-    #   inspect-ai
+    #   google-genai
     #   langchain-core
+    #   pydantic-ai-slim
 termcolor==2.3.0
     # via
     #   dotsys (pyproject.toml)
@@ -746,16 +957,16 @@ terminado==0.18.1
     # via
     #   jupyter-server
     #   jupyter-server-terminals
-textual==8.2.6
-    # via inspect-ai
 threadpoolctl==3.6.0
     # via scikit-learn
 tiktoken==0.13.0
-    # via inspect-ai
+    # via pydantic-ai-slim
 tinycss2==1.4.0
     # via bleach
 tokenizers==0.22.2
-    # via transformers
+    # via
+    #   cohere
+    #   transformers
 torch==2.12.0
     # via
     #   dotsys (pyproject.toml)
@@ -813,38 +1024,66 @@ typer==0.25.1
     #   huggingface-hub
     #   lighteval
     #   transformers
+types-protobuf==6.32.1.20260221
+    # via temporalio
+types-requests==2.33.0.20260513
+    # via cohere
 typing-extensions==4.15.0
     # via
+    #   anthropic
     #   beautifulsoup4
+    #   cohere
+    #   fastmcp-slim
+    #   google-genai
+    #   groq
+    #   grpcio
     #   helion
     #   huggingface-hub
-    #   inspect-ai
     #   langchain-core
     #   langchain-protocol
+    #   logfire
+    #   mcp
+    #   nexus-rpc
     #   openai
+    #   opentelemetry-api
+    #   opentelemetry-exporter-otlp-proto-http
+    #   opentelemetry-sdk
+    #   opentelemetry-semantic-conventions
+    #   py-key-value-aio
     #   pydantic
     #   pydantic-core
-    #   textual
+    #   temporalio
     #   torch
     #   typing-inspection
 typing-inspection==0.4.2
-    # via pydantic
+    # via
+    #   mcp
+    #   mistralai
+    #   pydantic
+    #   pydantic-ai-slim
+    #   pydantic-graph
+    #   pydantic-settings
 tzdata==2026.2
     # via arrow
-uc-micro-py==2.0.0
-    # via linkify-it-py
-universal-pathlib==0.3.10
-    # via inspect-ai
+uncalled-for==0.3.2
+    # via fastmcp-slim
 uri-template==1.3.0
     # via jsonschema
 urllib3==2.7.0
     # via
     #   botocore
     #   requests
+    #   types-requests
 uuid-utils==0.15.0
     # via
     #   langchain-core
     #   langsmith
+uvicorn==0.47.0
+    # via
+    #   fastmcp-slim
+    #   mcp
+watchfiles==1.1.1
+    # via fastmcp-slim
 wcwidth==0.7.0
     # via prompt-toolkit
 webcolors==25.10.0
@@ -855,8 +1094,16 @@ webencodings==0.5.1
     #   tinycss2
 websocket-client==1.9.0
     # via jupyter-server
+websockets==16.0
+    # via
+    #   fastmcp-slim
+    #   google-genai
 wrapt==1.17.3
-    # via aiobotocore
+    # via
+    #   opentelemetry-instrumentation
+    #   opentelemetry-instrumentation-httpx
+xai-sdk==1.12.2
+    # via pydantic-ai-slim
 xxhash==3.7.0
     # via
     #   datasets
@@ -865,12 +1112,7 @@ xxhash==3.7.0
     #   langsmith
 yarl==1.23.0
     # via aiohttp
-zipfile-zstd==0.0.4
-    # via inspect-ai
 zipp==3.23.1
-    # via inspect-ai
+    # via importlib-metadata
 zstandard==0.25.0
-    # via
-    #   inspect-ai
-    #   langsmith
-    #   zipfile-zstd
+    # via langsmith
