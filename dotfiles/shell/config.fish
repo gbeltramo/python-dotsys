@@ -2,8 +2,13 @@ fish_add_path $HOME/Lang/flutter/bin
 fish_add_path $HOME/Lang/zig/bin
 fish_add_path $HOME/Lang/android-studio/bin
 fish_add_path /usr/local/cuda-13.2/bin/
+fish_add_path $HOME/Android/Sdk/platform-tools
+fish_add_path $HOME/Android/Sdk/cmdline-tools/latest/bin
 
 set --export --global TERM xterm
+set --export --global ANDROID_HOME $HOME/Android/Sdk
+set --export --global ANDROID_SDK_ROOT $HOME/Android/Sdk
+
 
 function ls
     command ls --color=auto $argv

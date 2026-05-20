@@ -5,9 +5,12 @@ VERSION := 0.2.0
 all: build install test
 
 
+BUFFER_DATE := $(shell date -u -d '3 days ago' '+%Y-%m-%dT%H:%M:%SZ')
+
+
 lock:
-	uv lock
-	uv pip compile pyproject.toml -o requirements.txt
+	uv lock --exclude-newer ${BUFFER_DATE}
+	uv pip compile pyproject.toml  --all-extras --no-annotate --exclude-newer ${BUFFER_DATE} -o requirements.txt
 
 build:
 	python -m build
