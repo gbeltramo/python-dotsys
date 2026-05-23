@@ -11,7 +11,7 @@ resolution-markers = [
 ]
 
 [options]
-exclude-newer = "2026-05-17T14:34:28Z"
+exclude-newer = "2026-05-19T15:51:41Z"
 
 [[package]]
 name = "absl-py"
@@ -1012,6 +1012,7 @@ dependencies = [
     { name = "pybind11" },
     { name = "pydantic-ai" },
     { name = "pytest" },
+    { name = "requests" },
     { name = "ruff" },
     { name = "scipy" },
     { name = "smolagents" },
@@ -1046,6 +1047,7 @@ requires-dist = [
     { name = "pybind11" },
     { name = "pydantic-ai", specifier = ">=1.96.0" },
     { name = "pytest" },
+    { name = "requests" },
     { name = "ruff", specifier = ">=0.15.0" },
     { name = "scipy" },
     { name = "smolagents" },

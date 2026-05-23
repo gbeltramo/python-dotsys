@@ -17,6 +17,7 @@ classifiers = [
 dependencies = [
     "build",
     "termcolor",
+    "requests",
     "cython>=3.2.0",
     "numba",
     "pybind11",
