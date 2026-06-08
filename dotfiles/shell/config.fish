@@ -1,5 +1,6 @@
 fish_add_path $HOME/Lang/flutter/bin
 fish_add_path $HOME/Lang/zig/bin
+fish_add_path /usr/local/go/bin
 fish_add_path $HOME/Lang/android-studio/bin
 fish_add_path /usr/local/cuda-13.2/bin/
 fish_add_path $HOME/Android/Sdk/platform-tools
