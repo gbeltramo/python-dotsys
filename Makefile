@@ -5,16 +5,16 @@ VERSION := 0.2.0
 all: build install test
 
 
-BUFFER_DATE := $(shell date -u -d '3 days ago' '+%Y-%m-%dT%H:%M:%SZ')
-
+BUFFER_DATE := $(shell date -u -d '3 days ago' '+%Y-%m-%dT%H:%M:%SZ' 2>/dev/null || date -u -v-3d '+%Y-%m-%dT%H:%M:%SZ')
 
 lock:
 	uv lock --exclude-newer ${BUFFER_DATE}
-	uv pip compile pyproject.toml  --all-extras --no-annotate --exclude-newer ${BUFFER_DATE} -o requirements.txt
+	uv pip compile pyproject.toml  --all-extras --no-annotate --exclude-newer ${BUFFER_DATE} -o requirements_$(shell uname -m).txt
 
 build:
 	python -m build
 
+# Note: use "uv sync --group dev" on Mac OS
 install:
 	python -m pip install $(wildcard ./dist/$(DIST_NAME)-$(VERSION)*.whl) --force-reinstall -v
 	if [ ! -d $(HOME)/.dotfiles ]; then ln -s $(shell pwd)/dotfiles $(HOME)/.dotfiles; fi

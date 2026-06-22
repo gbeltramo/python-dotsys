@@ -1,0 +1,124 @@
+[
+    // --- Disable defaults that we are reclaiming ---
+    {
+        "key": "ctrl+s",
+        "command": "-workbench.action.files.save"
+    },
+    {
+        "key": "ctrl+w",
+        "command": "-workbench.action.closeActiveEditor"
+    },
+    // Give close-tab a new home (Emacs-style "kill buffer")
+    {
+        "key": "ctrl+x k",
+        "command": "workbench.action.closeActiveEditor"
+    },
+    // --- Character movement ---
+    {
+        "key": "ctrl+f",
+        "command": "cursorRight",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+b",
+        "command": "cursorLeft",
+        "when": "editorTextFocus"
+    },
+    // --- Line movement ---
+    {
+        "key": "ctrl+p",
+        "command": "cursorUp",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+n",
+        "command": "cursorDown",
+        "when": "editorTextFocus"
+    },
+    // --- Beginning / end of line ---
+    {
+        "key": "ctrl+a",
+        "command": "cursorHome",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+e",
+        "command": "cursorEnd",
+        "when": "editorTextFocus"
+    },
+    // --- Word movement ---
+    {
+        "key": "alt+f",
+        "command": "cursorWordRight",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "alt+b",
+        "command": "cursorWordLeft",
+        "when": "editorTextFocus"
+    },
+    // --- Beginning / end of document ---
+    {
+        "key": "alt+shift+,",
+        "command": "cursorTop",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "alt+shift+.",
+        "command": "cursorBottom",
+        "when": "editorTextFocus"
+    },
+    // --- Page up / down ---
+    {
+        "key": "ctrl+v",
+        "command": "cursorPageDown",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "alt+v",
+        "command": "cursorPageUp",
+        "when": "editorTextFocus"
+    },
+    // --- Search ---
+    {
+        "key": "ctrl+s",
+        "command": "actions.find",
+        "when": "editorFocus"
+    },
+    // --- Kill / copy / yank ---
+    {
+        "key": "ctrl+k",
+        "command": "runCommands",
+        "args": {
+            "commands": [
+                {
+                    "command": "cursorEndSelect"
+                },
+                {
+                    "command": "editor.action.clipboardCutAction"
+                }
+            ]
+        },
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "ctrl+w",
+        "command": "editor.action.clipboardCutAction",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "alt+w",
+        "command": "editor.action.clipboardCopyAction",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+y",
+        "command": "editor.action.clipboardPasteAction",
+        "when": "editorTextFocus"
+    },
+    // --- Go to line ---
+    {
+        "key": "alt+g g",
+        "command": "workbench.action.gotoLine"
+    }
+]
