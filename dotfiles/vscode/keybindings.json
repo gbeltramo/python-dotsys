@@ -121,4 +121,10 @@
         "key": "alt+g g",
         "command": "workbench.action.gotoLine"
     }
+    // --- Debug ---
+    {
+        "key": "shift+cmd+d",
+        "command": "flutter.runProfileMode"
+    }
 ]
+
