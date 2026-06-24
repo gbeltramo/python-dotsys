@@ -847,7 +847,7 @@ Configure ~python-mode~ for ~.py~ files with
 
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
-                 '(python-base-mode . ("ty" "server"))))
+                 '(python-base-mode . ("/home/gabri/.venv/bin/ty" "server"))))
 
   (add-hook 'python-base-mode-hook
             (lambda ()

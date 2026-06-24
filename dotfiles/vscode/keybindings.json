@@ -13,6 +13,11 @@
         "key": "ctrl+x k",
         "command": "workbench.action.closeActiveEditor"
     },
+    // Emacs-style save
+    {
+        "key": "ctrl+x ctrl+s",
+        "command": "workbench.action.files.save"
+    },
     // --- Character movement ---
     {
         "key": "ctrl+f",

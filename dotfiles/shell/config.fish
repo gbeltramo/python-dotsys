@@ -9,7 +9,8 @@ fish_add_path $HOME/Android/Sdk/cmdline-tools/latest/bin
 set --export --global TERM xterm
 set --export --global ANDROID_HOME $HOME/Android/Sdk
 set --export --global ANDROID_SDK_ROOT $HOME/Android/Sdk
-
+set --export --global HF_HOME $HOME/.cache/huggingface
+set --export --global HF_HUB_CACHE $HOME/.cache/huggingface/hub
 
 function ls
     command ls --color=auto $argv
