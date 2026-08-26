@@ -1,4 +1,4 @@
-#!/usr/bin/env p
+#!/usr/bin/env python3
 
 long_descr = """
 Description
@@ -14,7 +14,7 @@ Dependencies
 
 Example command
 ---------------
-- `resize.py -w 720 -f <IMAGE-FILE-NAME>`
+- `resize_image -w 720 -f <IMAGE-FILE-NAME>`
 
 """
 
