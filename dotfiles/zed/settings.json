@@ -1,0 +1,23 @@
+{
+  "icon_theme": "Catppuccin Frappé",
+  "project_panel": {
+    "dock": "left",
+  },
+  "agent": {
+    "dock": "right",
+  },
+  "base_keymap": "Emacs",
+  "ui_font_size": 16,
+  "buffer_font_size": 15,
+  "theme": "Catppuccin Frappé",
+  "lsp": {
+    "zls": {
+      "binary": {
+        "path": "/Users/gabri/Lang/zig/bin/zls",
+      },
+      "initialization_options": {
+        "zig_exe_path": "/Users/gabri/Lang/zig/bin/zig",
+      },
+    },
+  },
+}
