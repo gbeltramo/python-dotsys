@@ -1,15 +1,33 @@
 {
-  "icon_theme": "Catppuccin Frappé",
+  "edit_predictions": {
+    "open_ai_compatible_api": {
+      "max_output_tokens": 1024,
+      "model": "google/gemini-3.7-flash"
+    }
+  },
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Catppuccin Frappé",
+    "dark": "Catppuccin Frappé",
+  },
   "project_panel": {
     "dock": "left",
   },
   "agent": {
     "dock": "right",
+    "default_model": {
+      "provider": "openrouter",
+      "model": "google/gemini-3.7-flash",
+    },
   },
   "base_keymap": "Emacs",
   "ui_font_size": 16,
   "buffer_font_size": 15,
-  "theme": "Catppuccin Frappé",
+  "theme": {
+    "mode": "dark",
+    "light": "One Light",
+    "dark": "Zenburn Salad",
+  },
   "lsp": {
     "zls": {
       "binary": {
@@ -19,5 +37,11 @@
         "zig_exe_path": "/Users/gabri/Lang/zig/bin/zig",
       },
     },
+  },
+  "inlay_hints": {
+    "enabled": true,
+    "show_type_hints": true,
+    "show_parameter_hints": false,
+    "show_other_hints": false,
   },
 }

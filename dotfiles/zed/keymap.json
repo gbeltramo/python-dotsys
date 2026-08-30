@@ -16,5 +16,11 @@
     "bindings": {
       "ctrl-y": "editor::Paste"
     }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "ctrl-c": "editor::ToggleComments"
+    }
   }
 ]
