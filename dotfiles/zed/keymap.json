@@ -1,25 +1,10 @@
 [
   {
-    "context": "Workspace",
-    "bindings": {
-      // "shift shift": "file_finder::Toggle"
-    }
-  },
-  {
-    "context": "Editor && vim_mode == insert",
-    "bindings": {
-      // "j k": "vim::NormalBefore"
-    }
-  },
-  {
     "context": "Editor",
     "bindings": {
-      "ctrl-y": "editor::Paste"
-    }
-  },
-  {
-    "context": "Editor",
-    "bindings": {
+      "ctrl-k": "editor::KillRingCut",
+      "ctrl-y": "editor::KillRingYank",
+      "ctrl-w": "editor::KillRingCut",
       "ctrl-c": "editor::ToggleComments"
     }
   }
