@@ -33,11 +33,11 @@ function e
 end
 
 function dog
-    batcat --paging="always" --pager="less -R" --style="header" --wrap="never" --theme="Monokai Extended Bright" $argv
+    bat --paging="always" --pager="less -R" --style="header" --wrap="never" --theme="Monokai Extended Bright" $argv
 end
 
 function dog-full
-    batcat --paging="always" --pager="less -R" --style="full" --wrap="never" --theme="Monokai Extended Bright" $argv
+    bat --paging="always" --pager="less -R" --style="full" --wrap="never" --theme="Monokai Extended Bright" $argv
 end
 
 if test -f ~/.venv/bin/activate.fish
