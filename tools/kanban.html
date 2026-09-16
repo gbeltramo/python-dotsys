@@ -431,7 +431,11 @@
     cardEl.addEventListener('blur', () => {
       if (cardEl.isContentEditable) {
         cardEl.contentEditable = 'false';
-        const newText = cardEl.textContent.trim();
+        // exclude the delete button's '×' from the card text
+        const clone = cardEl.cloneNode(true);
+        const btn = clone.querySelector('.card-delete');
+        if (btn) btn.remove();
+        const newText = clone.textContent.trim();
         if (newText) {
           card.text = newText;
         } else {

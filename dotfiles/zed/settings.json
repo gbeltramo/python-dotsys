@@ -16,8 +16,9 @@
   "agent": {
     "dock": "right",
     "default_model": {
+      "enable_thinking": true,
       "provider": "openrouter",
-      "model": "nvidia/nemotron-3.5-lightning"
+      "model": "z-ai/glm-5.3-flash"
     },
     "inline_assistant_model": {
       "provider": "openrouter",
