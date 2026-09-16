@@ -51,10 +51,10 @@
   "lsp": {
     "zls": {
       "binary": {
-        "path": "/Users/gabri/Lang/zig/bin/zls"
+        "path": "/home/gabri/Lang/zig/bin/zls"
       },
       "initialization_options": {
-        "zig_exe_path": "/Users/gabri/Lang/zig/bin/zig"
+        "zig_exe_path": "/home/gabri/Lang/zig/bin/zig"
       }
     },
     "ty": {

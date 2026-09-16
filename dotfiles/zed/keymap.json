@@ -2,10 +2,10 @@
   {
     "context": "Editor",
     "bindings": {
-      "ctrl-k": "editor::KillRingCut",
-      "ctrl-y": "editor::KillRingYank",
-      "ctrl-w": "editor::KillRingCut",
-      "ctrl-c": "editor::ToggleComments"
-    }
-  }
+      "ctrl-k": "editor::Cut",
+      "ctrl-y": "editor::Paste",
+      "ctrl-w": "editor::Cut",
+      "ctrl-c": "editor::ToggleComments",
+    },
+  },
 ]
