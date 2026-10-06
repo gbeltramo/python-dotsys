@@ -6,6 +6,10 @@
       "ctrl-y": "editor::Paste",
       "ctrl-w": "editor::Cut",
       "ctrl-c": "editor::ToggleComments",
+      "alt-r": [
+        "task::Spawn",
+        { "task_name": "Remove blank lines in function bodies" },
+      ],
     },
   },
 ]

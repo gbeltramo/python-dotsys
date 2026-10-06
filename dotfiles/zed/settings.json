@@ -2,28 +2,29 @@
   "edit_predictions": {
     "open_ai_compatible_api": {
       "max_output_tokens": 1024,
-      "model": "nvidia/nemotron-3.5-lightning"
-    }
+      "model": "nvidia/nemotron-3.5-lightning",
+    },
   },
   "icon_theme": {
     "mode": "dark",
     "light": "Catppuccin Frappé",
-    "dark": "Catppuccin Frappé"
+    "dark": "Catppuccin Frappé",
   },
   "project_panel": {
-    "dock": "left"
+    "dock": "left",
   },
   "agent": {
     "dock": "right",
     "default_model": {
+      "effort": "low",
       "enable_thinking": true,
       "provider": "openrouter",
-      "model": "z-ai/glm-5.3-flash"
+      "model": "z-ai/glm-5.3-flash",
     },
     "inline_assistant_model": {
       "provider": "openrouter",
-      "model": "z-ai/glm-5.3-flash"
-    }
+      "model": "z-ai/glm-5.3-flash",
+    },
   },
   "base_keymap": "Emacs",
   "ui_font_size": 16,
@@ -31,7 +32,16 @@
   "theme": {
     "mode": "dark",
     "light": "One Light",
-    "dark": "Zenburn Salad"
+    "dark": "Zenburn Salad",
+  },
+  "file_types": {
+    "Starlark": [
+      "BUILD.bazel",
+      "WORKSPACE.bazel",
+      "MODULE.bazel",
+      "*.bzl",
+      "*.bazel",
+    ],
   },
   "languages": {
     "Python": {
@@ -39,34 +49,49 @@
       "format_on_save": "on",
       "code_actions_on_format": {
         "source.organizeImports.ruff": true,
-        "source.fixAll.ruff": true
+        "source.fixAll.ruff": true,
       },
       "formatter": {
         "language_server": {
-          "name": "ruff"
-        }
-      }
-    }
+          "name": "ruff",
+        },
+      },
+    },
+    "Starlark": {
+      "formatter": {
+        "external": {
+          "command": "buildifier",
+          "arguments": ["--path={buffer_path}"],
+        },
+      },
+    },
   },
   "lsp": {
     "zls": {
       "binary": {
-        "path": "/home/gabri/Lang/zig/bin/zls"
+        "path": "/home/gabri/Lang/zig/bin/zls",
       },
       "initialization_options": {
-        "zig_exe_path": "/home/gabri/Lang/zig/bin/zig"
-      }
+        "zig_exe_path": "/home/gabri/Lang/zig/bin/zig",
+      },
     },
     "ty": {
       "binary": {
-        "path": ".venv/bin/ty"
-      }
-    }
+        "path": ".venv/bin/ty",
+      },
+    },
   },
   "inlay_hints": {
     "enabled": true,
     "show_type_hints": true,
     "show_parameter_hints": false,
-    "show_other_hints": false
-  }
+    "show_other_hints": false,
+  },
+  "minimap": {
+    "max_width_columns": 80,
+    "current_line_highlight": "line",
+    "thumb_border": "full",
+    "thumb": "hover",
+    "show": "auto",
+  },
 }
